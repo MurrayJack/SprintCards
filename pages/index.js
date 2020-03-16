@@ -1,101 +1,109 @@
 import io from 'socket.io-client'
 import { useState, useEffect } from 'react'
+import SprintCard from "./components/SprintCard"
+import SprintCardOptions from "./components/SprintCardOptions"
+import cards from "./cards";
 
 const Home = () => {
-  const [others, setOthers] = useState([])
-  const [current, setCurrent] = useState();
-  const [name, setName] = useState("");
-  const socket = io();
+    const [connected, setConnected] = useState(false);
+    const [others, setOthers] = useState([])
+    const [current, setCurrent] = useState();
+    const [name, setName] = useState("");
+    const socket = io();
 
-  useEffect(() => {
+    useEffect(() => {
+        const name = window.localStorage.getItem("name");
+        if (name) {
+            setName(name)
+            setConnected(true)
+        }
 
-    setName(window.localStorage.getItem("name"))
+        socket.on("reply answers", data => {
+            setOthers(data)
+        })
 
-    socket.on("reply answers", data => {
-      setOthers(data)
-    })
+        socket.on("reply clear", data => {
+            setCurrent("")
+            setOthers({})
+        })
 
-    socket.on("reply clear", data => {
-      setCurrent("")
-      setOthers({})
-    })
+        return () => socket.disconnect()
+    }, [])
 
-    return () => socket.disconnect()
-  }, [])
-
-  const handleCurrentClick = (newCurrent) => {
-    socket.emit('send result', { sp: newCurrent, name })
-    setCurrent(newCurrent)
-  }
-
-  const handleClear = () => {
-    socket.emit('send clear')
-  }
-
-  const handleNameChange = e => {
-    window.localStorage.setItem("name", e.target.value)
-    setName(e.target.value)
-  }
-
-  const buildResults = () => {
-    const items = [];
-    for (var property in others) {
-      if (others.hasOwnProperty(property)) {
-        // Do things here
-        items.push(
-          <li>
-            <SprintCard name={property} current={current} onClick={handleCurrentClick} caption={others[property]} />
-          </li>
-        )
-      }
+    const handleCurrentClick = (newCurrent) => {
+        socket.emit('send result', { sp: newCurrent, name })
+        setCurrent(newCurrent)
     }
-    return items
-  }
 
-  return (
-    <>
-      <main>
-        <header>
-          <label>Name:</label>
-          <input value={name} onChange={handleNameChange} placeholder="name" />
-          <button>Connect</button>
-        </header>
+    const handleClear = () => {
+        socket.emit('send clear')
+    }
 
-        <section>
-          <h2>Selection</h2>
-          <ul>
-            <li><SprintCard current={current} onClick={handleCurrentClick} caption="1" /></li>
-            <li><SprintCard current={current} onClick={handleCurrentClick} caption="2" /></li>
-            <li><SprintCard current={current} onClick={handleCurrentClick} caption="3" /></li>
-            <li><SprintCard current={current} onClick={handleCurrentClick} caption="5" /></li>
-            <li><SprintCard current={current} onClick={handleCurrentClick} caption="8" /></li>
-            <li><SprintCard current={current} onClick={handleCurrentClick} caption="13" /></li>
-            <li><SprintCard current={current} onClick={handleCurrentClick} caption="?" /></li>
-          </ul>
-        </section>
+    const handleNameChange = e => {
+        window.localStorage.setItem("name", e.target.value)
+        setName(e.target.value)
+    }
 
-        <article>
-          <h2>Results</h2>
-          <ul>
-            {buildResults()}
-          </ul>
-        </article>
+    const handleConnect = () => {
+        if (name) {
+            setConnected(true)
+        }
+    }
 
-        <footer>
-          <button onClick={handleClear}>Clear</button>
-        </footer>
+    const buildResults = () => {
+        const items = [];
+        for (var property in others) {
+            if (others.hasOwnProperty(property)) {
+                // Do things here
+                const icon = cards.filter(e => e.caption === others[property])[0].icon
 
-      </main>
+                items.push(
+                    <li>
+                        <SprintCard name={property} icon={icon} onClick={handleCurrentClick} caption={others[property]} />
+                    </li>
+                )
+            }
+        }
+        return items
+    }
 
-      <style global jsx>{`
+    return (
+        <>
+            <main>
+                <header>
+                    <label>Name:</label>
+                    <input autoFocus value={name} onChange={handleNameChange} placeholder="name" />
+                    <button onClick={handleConnect}>Connect</button>
+                </header>
+
+                <section>
+                    <SprintCardOptions current={current} connected={connected} onclick={handleCurrentClick} />
+                </section>
+
+                <article>
+                    <h2>Results</h2>
+                    <ul>
+                        {buildResults()}
+                    </ul>
+                </article>
+
+                <footer>
+                    <button onClick={handleClear}>Clear</button>
+                </footer>
+
+            </main>
+
+            <style global jsx>{`
         body {
           padding: 0;
           margin:0;
           font-family: arial;
+          color: #2f3640
         }
 
         h2 {
           text-align: center;
+          font-size: 32px
         }
 
         input {
@@ -118,19 +126,19 @@ const Home = () => {
           color: white;
         }
       `}
-      </style>
+            </style>
 
-      <style jsx>{`
+            <style jsx>{`
 
           main {
             display : grid;
             /* grid-gap: 25px; */
-            grid-template-rows: 90px 500px auto 100px;
+            grid-template-rows: 90px 600px auto 100px;
             height: 100vh;
           }
 
           header {
-            background: #333;
+            background: #2f3640;
             color: white;
             display: grid;
             grid-template-columns: 200px auto 200px;
@@ -140,19 +148,13 @@ const Home = () => {
 
           section{
             padding: 32px;
-            background: #f2f2f2;
+            background: #f5f6fa;
           }
 
-          section ul {
-            display: grid;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            grid-template-columns: repeat(8, auto);
-            grid-gap: 16px;
-            justify-content: center;
+          article {
+              background: #dcdde1
           }
-
+        
           article ul {
             display: grid;
             list-style: none;
@@ -168,52 +170,15 @@ const Home = () => {
           }
 
           footer {
-            background: #333;
+            background: #2f3640;
             color: white;
             display: grid;
 
           }
   
       `}</style>
-    </>
-  )
-}
-
-const SprintCard = ({ current, caption, onClick, name }) => {
-
-  const handleOnClick = () => {
-    onClick(caption);
-  }
-
-  return (
-    <>
-      <div>
-        <button onClick={handleOnClick}>{caption}</button>
-        <p>{name}</p>
-      </div>
-      <style jsx>{`
-
-        button {
-          border: 15px solid ${current === caption ? "red" : "#0097ef"};
-          border-radius: 5px;
-          width: 200px;
-          height: 300px;
-          background-color: white;
-          font-size: 60px;
-          color: #333;
-          cursor: pointer;
-       }
-
-       p {
-         font-size: 18px;
-         text-align: center;
-       }
-
-
-      `}</style>
-
-    </>
-  )
+        </>
+    )
 }
 
 export default Home
