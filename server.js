@@ -19,12 +19,22 @@ io.on('connect', socket => {
     });
 
     socket.on("send clear", () => {
-        answers = {};
-        socket.broadcast.emit('reply clear')
+        for (var property in answers) {
+            if (answers.hasOwnProperty(property)) {
+                answers[property] = "0"
+            }
+        }
+        socket.broadcast.emit('reply clear', answers)
     });
 
-    socket.on('disconnect', () => {
+    socket.on('disconnect', data => {
+        console.log(data)
         console.log('user disconnected!')
+    })
+
+    socket.on('send connection', ({ name }) => {
+        answers[name] = "0"
+        socket.broadcast.emit('reply connection', answers)
     })
 })
 

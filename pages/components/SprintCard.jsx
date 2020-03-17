@@ -1,28 +1,73 @@
-export default ({ current, caption, onClick, name = "", disabled, icon }) => {
+import cards from "./cards";
+
+export default ({ current, caption, onClick, name = "", disabled, hide = false }) => {
+    // Do things here
+
     const handleOnClick = () => {
         onClick(caption);
     };
 
+    const Icon = () => {
+        if (caption !== "0") {
+            const icon = cards.filter((e) => e.caption === caption)[0].icon;
+            return icon();
+        }
+
+        return <div></div>;
+    };
+
+    const Caption = () => {
+        return <div>{caption !== "0" ? caption : ""}</div>;
+    };
+
     return (
         <>
-            <div>
-                <button aria-current={current === caption} onClick={handleOnClick} disabled={disabled}>
-                    <div>{icon && icon()}</div>
-                    <div>{caption}</div>
+            <>
+                <button
+                    className={caption !== "0" && hide ? "hello" : ""}
+                    aria-current={current === caption}
+                    onClick={handleOnClick}
+                    disabled={disabled}
+                >
+                    <div>
+                        <Icon />
+                    </div>
+                    <div>
+                        <Caption />
+                    </div>
                 </button>
                 <p>{name}</p>
-            </div>
+            </>
             <style jsx>{`
+                @keyframes example {
+                    from {
+                        transform: rotateY(0);
+                        color: red;
+                    }
+                    to {
+                        transform: rotateY(1turn);
+                        color: blue;
+                    }
+                }
+
                 button {
                     border: 15px solid #487eb0;
                     border-radius: 5px;
-                    width: 250px;
-                    height: 350px;
+                    width: 170px;
+                    height: 260px;
                     background-color: white;
                     font-size: 60px;
                     color: #333;
                     cursor: pointer;
                     position: relative;
+                }
+
+                button.hello {
+                    animation: example 1s infinite;
+                }
+
+                button.hello > div {
+                    opacity: 0;
                 }
 
                 button div:first-of-type {

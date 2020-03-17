@@ -28,7 +28,7 @@ export default [
         icon: GiFireworkRocket
     },
     {
-        caption: "Coffee",
+        caption: "?",
         icon: AiOutlineCoffee
     }
 ]

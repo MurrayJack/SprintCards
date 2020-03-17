@@ -2,33 +2,46 @@ import io from 'socket.io-client'
 import { useState, useEffect } from 'react'
 import SprintCard from "./components/SprintCard"
 import SprintCardOptions from "./components/SprintCardOptions"
-import cards from "./cards";
 
 const Home = () => {
     const [connected, setConnected] = useState(false);
-    const [others, setOthers] = useState([])
+    const [answers, setAnswers] = useState([])
     const [current, setCurrent] = useState();
     const [name, setName] = useState("");
+    const [reveal, setReveal] = useState(true);
+
     const socket = io();
 
     useEffect(() => {
-        const name = window.localStorage.getItem("name");
+        setName(window.localStorage.getItem("name"));
         if (name) {
-            setName(name)
-            setConnected(true)
+            setConnected()
         }
 
+        socket.on("reply connection", data => {
+            setAnswers(data)
+        })
+
         socket.on("reply answers", data => {
-            setOthers(data)
+            setAnswers(data)
         })
 
         socket.on("reply clear", data => {
             setCurrent("")
-            setOthers({})
+            setAnswers(data)
         })
 
-        return () => socket.disconnect()
+        return () => socket.disconnect(name)
     }, [])
+
+    const setConnection = () => {
+        window.localStorage.setItem("name", name)
+
+        setName(name)
+        setConnected(true)
+
+        socket.emit('send connection', { name })
+    }
 
     const handleCurrentClick = (newCurrent) => {
         socket.emit('send result', { sp: newCurrent, name })
@@ -37,29 +50,26 @@ const Home = () => {
 
     const handleClear = () => {
         socket.emit('send clear')
+        setReveal(true)
     }
 
-    const handleNameChange = e => {
-        window.localStorage.setItem("name", e.target.value)
-        setName(e.target.value)
+    const handleReveal = () => {
+        setReveal(false)
     }
 
     const handleConnect = () => {
         if (name) {
-            setConnected(true)
+            setConnection();
         }
     }
 
     const buildResults = () => {
         const items = [];
-        for (var property in others) {
-            if (others.hasOwnProperty(property)) {
-                // Do things here
-                const icon = cards.filter(e => e.caption === others[property])[0].icon
-
+        for (var property in answers) {
+            if (answers.hasOwnProperty(property)) {
                 items.push(
                     <li>
-                        <SprintCard name={property} icon={icon} onClick={handleCurrentClick} caption={others[property]} />
+                        <SprintCard hide={reveal} name={property} onClick={handleCurrentClick} caption={answers[property]} />
                     </li>
                 )
             }
@@ -72,7 +82,7 @@ const Home = () => {
             <main>
                 <header>
                     <label>Name:</label>
-                    <input autoFocus value={name} onChange={handleNameChange} placeholder="name" />
+                    <input autoFocus value={name} onChange={e => setName(e.target.value)} placeholder="name" />
                     <button onClick={handleConnect}>Connect</button>
                 </header>
 
@@ -88,7 +98,9 @@ const Home = () => {
                 </article>
 
                 <footer>
-                    <button onClick={handleClear}>Clear</button>
+                    <button disabled={!connected} onClick={handleReveal}>Reveal</button>
+                    <div></div>
+                    <button disabled={!connected} onClick={handleClear}>Clear</button>
                 </footer>
 
             </main>
@@ -122,8 +134,13 @@ const Home = () => {
         button {
           font-size: 32px;
           border: 0;
-          background: orangered;
+          background: #c23616;
           color: white;
+          cursor: pointer;
+        }
+
+        button[disabled] {
+            opacity: 0.4;
         }
       `}
             </style>
@@ -133,7 +150,7 @@ const Home = () => {
           main {
             display : grid;
             /* grid-gap: 25px; */
-            grid-template-rows: 90px 600px auto 100px;
+            grid-template-rows: 90px 1fr 1fr 100px;
             height: 100vh;
           }
 
@@ -173,7 +190,7 @@ const Home = () => {
             background: #2f3640;
             color: white;
             display: grid;
-
+            grid-template-columns: 1fr 1px 1fr
           }
   
       `}</style>
