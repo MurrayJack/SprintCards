@@ -8,7 +8,7 @@ const Home = () => {
     const [answers, setAnswers] = useState([])
     const [current, setCurrent] = useState();
     const [name, setName] = useState("");
-    const [reveal, setReveal] = useState(true);
+    const [revealed, setRevealed] = useState(false);
 
     const socket = io();
 
@@ -29,6 +29,11 @@ const Home = () => {
         socket.on("reply clear", data => {
             setCurrent("")
             setAnswers(data)
+            setRevealed(false)
+        })
+
+        socket.on("reply reveal", data => {
+            setRevealed(true)
         })
 
         return () => socket.disconnect(name)
@@ -50,11 +55,10 @@ const Home = () => {
 
     const handleClear = () => {
         socket.emit('send clear')
-        setReveal(true)
     }
 
     const handleReveal = () => {
-        setReveal(false)
+        socket.emit('send reveal')
     }
 
     const handleConnect = () => {
@@ -69,7 +73,7 @@ const Home = () => {
             if (answers.hasOwnProperty(property)) {
                 items.push(
                     <li>
-                        <SprintCard hide={reveal} name={property} onClick={handleCurrentClick} caption={answers[property]} />
+                        <SprintCard hide={!revealed} name={property} onClick={handleCurrentClick} caption={answers[property]} />
                     </li>
                 )
             }

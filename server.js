@@ -36,6 +36,10 @@ io.on('connect', socket => {
         answers[name] = "0"
         socket.broadcast.emit('reply connection', answers)
     })
+
+    socket.on('send reveal', () => {
+        socket.broadcast.emit('reply reveal')
+    })
 })
 
 nextApp.prepare().then(() => {
