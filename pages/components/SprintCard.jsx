@@ -1,4 +1,4 @@
-import cards from "./cards";
+import cards from "../data/cards";
 
 export default ({ current, caption, onClick, name = "", disabled, hide = false }) => {
     // Do things here
@@ -60,6 +60,10 @@ export default ({ current, caption, onClick, name = "", disabled, hide = false }
                     color: #333;
                     cursor: pointer;
                     position: relative;
+                }
+
+                button:hover {
+                    transform: scale(1.2)
                 }
 
                 button.hello {

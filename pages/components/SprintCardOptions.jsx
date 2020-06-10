@@ -1,5 +1,5 @@
 import SprintCard from "./SprintCard";
-import cards from "./cards";
+import cards from "../data/cards";
 
 export default ({ current, onclick, connected }) => {
     return (
@@ -22,6 +22,12 @@ export default ({ current, onclick, connected }) => {
                     grid-gap: 16px;
                     justify-content: center;
                     height: 60%;
+                }
+
+                li {
+                    display: grid;
+                    align-items: center;
+                    justify-items: center;
                 }
             `}</style>
         </>
