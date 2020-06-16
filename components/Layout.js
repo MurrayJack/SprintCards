@@ -14,25 +14,27 @@ export const Layout = ({ children }) => <>
             --gaps-large: 16px;
             --gaps-xlarge: 24px;
             --gaps-xxlarge: 32px;
+
+            --color-accent-color: #F68E1E;
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --main-bg-color: #121723;
-                --main-color: #9ca8bd;
+                --main-bg-color: #232B35;
+                --main-color: #DFE1DF;
 
-                --accent-bg-color: #47a0b7;
-                --accent-color: white;
+                --button-bg-color: var(--color-accent-color);
+                --button-color: white;
             }
         }
         
         @media (prefers-color-scheme: light) {
             :root {
-                --main-bg-color: #f2f2f2;
-                --main-color: #121723;
+                --main-bg-color: #DFE1DF;
+                --main-color: #232B35;
 
-                --accent-bg-color: #47a0b7;
-                --accent-color: white;
+                --button-bg-color: var(--color-accent-color);
+                --button-color: white;
             }
         }
 
@@ -52,13 +54,14 @@ export const Layout = ({ children }) => <>
         }
 
         button {
-            background: var(--accent-bg-color);
-            color: var(--accent-color);
+            background: var(--button-bg-color);
+            color: var(--button-color);
             border: 0;
             font-size: var(--font-normal);
             padding: var(--gaps-large) var(--gaps-xlarge); 
             border-radius: 3px;
             cursor: pointer;
+            text-transform: uppercase;
         }
 
 
