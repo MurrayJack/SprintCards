@@ -1,25 +1,35 @@
 import SprintCard from "./SprintCard";
-import cards from "./cards";
 
-export default ({ current, onclick }) => {
+export const CardSelection = ({ answers, current, revealed, property, handleCurrentClick }) => {
+    const buildResults = () => {
+        const items = [];
+        for (var property in answers) {
+            if (answers.hasOwnProperty(property)) {
+                items.push(
+                    <li>
+                        <SprintCard
+                            hide={!revealed}
+                            name={property}
+                            onClick={handleCurrentClick}
+                            caption={answers[property]}
+                        />
+                    </li>,
+                );
+            }
+        }
+        return items;
+    };
+
     return (
         <>
             <section>
                 <ul>
-                    {cards.map((e) => (
-                        <li>
-                            <SprintCard key={e.caption} current={current} onClick={onclick} {...e} />
-                        </li>
-                    ))}
+                    <ul>{buildResults()}</ul>
                 </ul>
             </section>
             <style jsx>{`
                 section {
                     padding: var(--gaps-xlarge);
-                    display: grid;
-                    align-content: center;
-                    height: 100%;
-                    box-sizing: border-box;
                 }
 
                 ul {
@@ -36,12 +46,8 @@ export default ({ current, onclick }) => {
                     display: grid;
                     align-items: center;
                     justify-items: center;
-                    padding: 0;
-                    margin: 0;
                 }
             `}</style>
         </>
     );
 };
-
-

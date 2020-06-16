@@ -55,15 +55,16 @@ export default ({ current, caption, onClick, name = "", disabled, hide = false }
                     border-radius: 5px;
                     width: 170px;
                     height: 260px;
-                    background-color: white;
+                    background-color: var(--main-bg-color2);
                     font-size: 60px;
-                    color: #333;
+                    color: var(--main-color2);
                     cursor: pointer;
                     position: relative;
+                    transition: all linear 0.2s;
                 }
 
                 button:hover {
-                    transform: scale(1.2)
+                    transform: scale(1.1);
                 }
 
                 button.hello {
@@ -75,14 +76,14 @@ export default ({ current, caption, onClick, name = "", disabled, hide = false }
                 }
 
                 button div:first-of-type {
-                    color: #c23616;
+                    color: var(--color-accent-color);
                 }
 
                 div:first-of-type {
                 }
 
                 button[aria-current="true"] {
-                    border: 15px solid #c23616;
+                    border: 15px solid var(--color-accent-color);
                     box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.8);
                 }
 
@@ -95,6 +96,9 @@ export default ({ current, caption, onClick, name = "", disabled, hide = false }
                     font-weight: bold;
                     text-transform: uppercase;
                     text-align: center;
+                    width: 170px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
             `}</style>
         </>

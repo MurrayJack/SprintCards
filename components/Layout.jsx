@@ -14,17 +14,23 @@ export const Layout = ({ children }) => <>
             --gaps-large: 16px;
             --gaps-xlarge: 24px;
             --gaps-xxlarge: 32px;
+            --gaps-xxxlarge: 48px;
 
             --color-accent-color: #F68E1E;
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --main-bg-color: #232B35;
+                --main-bg-color:  #1f2730;
                 --main-color: #DFE1DF;
+
+                --main-bg-color2: #272e37  ;
+
 
                 --button-bg-color: var(--color-accent-color);
                 --button-color: white;
+
+                --main-border-color: #757581;
             }
         }
         
@@ -33,8 +39,13 @@ export const Layout = ({ children }) => <>
                 --main-bg-color: #DFE1DF;
                 --main-color: #232B35;
 
+                --main-bg-color2: white;
+
                 --button-bg-color: var(--color-accent-color);
                 --button-color: white;
+
+                --main-border-color: ##ddd;
+                
             }
         }
 
@@ -79,6 +90,58 @@ export const Layout = ({ children }) => <>
         h1 {
             font-size: var(--font-xlarge)
         }
+
+        input {
+            padding: var(--gaps-large);
+            font-size: 1em;
+            border-radius: 4px;
+            border: 1px solid var(--color-accent-color);
+            background: var(--main-bg-color);
+            color: var(--main-color);
+        }
     `}</style>
 
 </>
+
+
+{/* 
+            <style global jsx>
+                {`
+                    body {
+                        padding: 0;
+                        margin: 0;
+                        font-family: arial;
+                        color: #2f3640;
+                    }
+
+                    h2 {
+                        text-align: center;
+                        font-size: 32px;
+                    }
+
+                    input {
+                        font-size: 32px;
+                        text-indent: 10px;
+                        border: 0;
+                    }
+
+                    label {
+                        font-size: 32px;
+                        height: 100%;
+                        line-height: 90px;
+                        text-indent: 20px;
+                    }
+
+                    button {
+                        font-size: 32px;
+                        border: 0;
+                        background: #c23616;
+                        color: white;
+                        cursor: pointer;
+                    }
+
+                    button[disabled] {
+                        opacity: 0.4;
+                    }
+                `}
+            </style> */}

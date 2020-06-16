@@ -20,7 +20,7 @@ const Server = () => {
 
             <style jsx>{`
                 main {
-                    padding: 40px;
+                    padding: var(--gaps-xlarge);
                     text-align: center;
                     display: grid;
                     grid-gap: var(--gaps-xlarge);

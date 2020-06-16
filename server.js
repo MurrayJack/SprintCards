@@ -27,14 +27,14 @@ io.on('connect', socket => {
         socket.broadcast.emit('reply clear', answers)
     });
 
-    socket.on('disconnect', data => {
+    socket.on('disconnect', data => { 
         console.log(data)
         console.log('user disconnected!')
     })
 
-    socket.on('send connection', ({ name }) => {
+    socket.on('send_connection', ({ name }) => {
         answers[name] = "0"
-        socket.broadcast.emit('reply connection', answers)
+        socket.broadcast.emit('reply_connection', answers)
     })
 
     socket.on('send reveal', () => {
