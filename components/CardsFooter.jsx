@@ -9,7 +9,8 @@ export const CardsFooter = ({ onHandleReveal, onHandleClear }) => (
             footer {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                grid-gap: 1px;
+                grid-gap: 20px;
+                padding: 20px;
             }
 
             button {

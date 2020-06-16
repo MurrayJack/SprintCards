@@ -27,7 +27,7 @@ export const Layout = ({ children }) => <>
                 --main-bg-color2: #272e37  ;
 
 
-                --button-bg-color: var(--color-accent-color);
+                --button-bg-color: #9B7351;
                 --button-color: white;
 
                 --main-border-color: #757581;
@@ -41,7 +41,7 @@ export const Layout = ({ children }) => <>
 
                 --main-bg-color2: white;
 
-                --button-bg-color: var(--color-accent-color);
+                --button-bg-color: #272e37;
                 --button-color: white;
 
                 --main-border-color: ##ddd;
@@ -75,7 +75,9 @@ export const Layout = ({ children }) => <>
             text-transform: uppercase;
         }
 
-
+        button[type="submit"] {
+            background: var(--color-accent-color);
+        }
         h1,
         h2,
         h3,

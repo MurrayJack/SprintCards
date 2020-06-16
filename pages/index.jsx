@@ -1,7 +1,6 @@
 import { Layout } from "../components/Layout";
 import io from "socket.io-client";
 import { useState, useEffect } from "react";
-import SprintCard from "../components/SprintCard";
 import SprintCardOptions from "../components/SprintCardOptions";
 import { CardsConnection } from "../components/CardsConnection";
 import { CardsFooter } from "../components/CardsFooter";
@@ -75,17 +74,15 @@ const Home = () => {
     return (
         <>
             <Layout>
-                {!connected && <CardsConnection onConnect={handleConnect} />}
+                <CardsConnection onConnect={handleConnect} connected={connected} />
 
-                {connected && (
-                    <main>
-                        <SprintCardOptions current={current} onclick={handleCurrentClick} />
+                <main>
+                    <SprintCardOptions current={current} onclick={handleCurrentClick} />
 
-                        <CardSelection revealed={revealed} answers={answers} current={current} />
+                    {connected ? <CardSelection revealed={revealed} answers={answers} current={current} /> : <div></div>}
 
-                        <CardsFooter onHandleReveal={handleReveal} onHandleClear={handleClear} />
-                    </main>
-                )}
+                    <CardsFooter onHandleReveal={handleReveal} onHandleClear={handleClear} />
+                </main>
             </Layout>
 
             <style jsx>{`

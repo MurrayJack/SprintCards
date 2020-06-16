@@ -42,16 +42,14 @@ export default ({ current, caption, onClick, name = "", disabled, hide = false }
                 @keyframes example {
                     from {
                         transform: rotateY(0);
-                        color: red;
                     }
                     to {
                         transform: rotateY(1turn);
-                        color: blue;
                     }
                 }
 
                 button {
-                    border: 15px solid #487eb0;
+                    border: 5px solid #487eb0;
                     border-radius: 5px;
                     width: 170px;
                     height: 260px;
@@ -61,6 +59,7 @@ export default ({ current, caption, onClick, name = "", disabled, hide = false }
                     cursor: pointer;
                     position: relative;
                     transition: all linear 0.2s;
+                    position: relative;
                 }
 
                 button:hover {
@@ -83,7 +82,9 @@ export default ({ current, caption, onClick, name = "", disabled, hide = false }
                 }
 
                 button[aria-current="true"] {
-                    border: 15px solid var(--color-accent-color);
+                    transform: scale(1.1);
+                    z-index: 1;
+                    border: 5px solid var(--color-accent-color);
                     box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.8);
                 }
 
