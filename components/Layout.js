@@ -1,8 +1,6 @@
 export const Layout = ({ children }) => <>
 
-    <main>
-        {children}
-    </main>
+    {children}
 
     <style jsx global>{`
         :root {
@@ -22,6 +20,9 @@ export const Layout = ({ children }) => <>
             :root {
                 --main-bg-color: #121723;
                 --main-color: #9ca8bd;
+
+                --accent-bg-color: #47a0b7;
+                --accent-color: white;
             }
         }
         
@@ -29,6 +30,9 @@ export const Layout = ({ children }) => <>
             :root {
                 --main-bg-color: #f2f2f2;
                 --main-color: #121723;
+
+                --accent-bg-color: #47a0b7;
+                --accent-color: white;
             }
         }
 
@@ -47,8 +51,31 @@ export const Layout = ({ children }) => <>
             color: var(--main-color);
         }
 
+        button {
+            background: var(--accent-bg-color);
+            color: var(--accent-color);
+            border: 0;
+            font-size: var(--font-normal);
+            padding: var(--gaps-large) var(--gaps-xlarge); 
+            border-radius: 3px;
+            cursor: pointer;
+        }
 
 
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            letter-spacing: 0.03em  ;
+            padding: 0;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: var(--font-xlarge)
+        }
     `}</style>
 
 </>

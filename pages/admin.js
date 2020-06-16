@@ -1,26 +1,33 @@
 import { Layout } from "../components/Layout";
-import io from 'socket.io-client'
+import io from "socket.io-client";
 
 const Server = () => {
-
     const socket = io();
 
     const handleResetUsers = () => {
-        socket.emit('clear_users')
-    }
+        socket.emit("clear_users");
+    };
 
+    return (
+        <>
+            <Layout>
+                <main>
+                    <h1>Server Functions</h1>
 
-    return <>
-        <Layout>
+                    <button onClick={handleResetUsers}>Reset Users</button>
+                </main>
+            </Layout>
 
-
-            <h1>Server Functions</h1>
-
-            <button onClick={handleResetUsers}>Reset Users</button>
-        </Layout>
-    </>
-
-}
-
+            <style jsx>{`
+                main {
+                    padding: 40px;
+                    text-align: center;
+                    display: grid;
+                    grid-gap: var(--gaps-xlarge);
+                }
+            `}</style>
+        </>
+    );
+};
 
 export default Server;
