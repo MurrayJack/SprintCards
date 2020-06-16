@@ -1,4 +1,4 @@
-import cards from "../data/cards";
+import cards from "./cards";
 
 export default ({ current, caption, onClick, name = "", disabled, hide = false }) => {
     // Do things here

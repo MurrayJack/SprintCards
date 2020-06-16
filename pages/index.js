@@ -1,7 +1,7 @@
 import io from 'socket.io-client'
 import { useState, useEffect } from 'react'
-import SprintCard from "./components/SprintCard"
-import SprintCardOptions from "./components/SprintCardOptions"
+import SprintCard from "../components/SprintCard"
+import SprintCardOptions from "../components/SprintCardOptions"
 
 const Home = () => {
     const [connected, setConnected] = useState(false);
@@ -34,6 +34,13 @@ const Home = () => {
 
         socket.on("reply reveal", data => {
             setRevealed(true)
+        })
+
+        // The Admin has reset all the users
+        socket.on("force_disconnect", () => {
+            setConnected(false)
+            setAnswers()
+            setCurrent("")
         })
 
         return () => socket.disconnect(name)

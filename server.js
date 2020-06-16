@@ -40,6 +40,12 @@ io.on('connect', socket => {
     socket.on('send reveal', () => {
         socket.broadcast.emit('reply reveal')
     })
+
+    socket.on('clear_users', () => {
+        console.log("clear_users")
+        answers = {}
+        socket.broadcast.emit('force_disconnect')
+    })
 })
 
 nextApp.prepare().then(() => {
