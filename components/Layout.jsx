@@ -74,10 +74,6 @@ export const Layout = ({ children }) => (
                 text-transform: uppercase;
             }
 
-            button:hover {
-                background-color: var(--color-accent-color);
-            }
-
             button[type="submit"] {
                 background: var(--color-accent-color);
             }

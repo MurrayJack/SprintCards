@@ -16,6 +16,11 @@ export const CardsFooter = ({ onHandleReveal, onHandleClear }) => (
             button {
                 border-radius: 0;
             }
+
+            button:hover {
+                background-color: var(--color-accent-color);
+            }
+
         `}</style>
     </>
 );
