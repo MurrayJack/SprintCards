@@ -1,7 +1,7 @@
 import { useConnection } from '../context/ConnectionContext'
 import { ICard } from './cards'
 import SprintCard from './SprintCard'
-import cards from "./cards";
+import cards from './cards'
 
 export interface ICardSelectionProps {
     answers: ICard[]
@@ -10,33 +10,23 @@ export interface ICardSelectionProps {
 }
 
 export const CardSelection = () => {
-    const { results, isRevealed } = useConnection()
+    const { results, isRevealed, selection } = useConnection()
 
-    const buildResults = () => {
-        const items = []
-        for (var property in results?.users) {
-            if (results?.users.hasOwnProperty(property)) {
-                items.push(
-                    <li key={property}>
-                        <SprintCard
-                            
-                            // hide={!isRevealed}
-                            // name={property}
-                            // caption={results.users[property].selection}
-                        />
-                        <p>{property}</p>
-                    </li>,
-                )
-            }
-        }
-        return items
-    }
+    const users = Object.keys(results?.users || {})
 
     return (
         <>
             <section>
                 <ul>
-                    <ul>{buildResults()}</ul>
+                    {users.map((e) => (
+                        <li key={e}>
+                            <SprintCard
+                                card={cards.find(c => c.caption === results.users[e].selection)}
+                                hidden={!isRevealed && Boolean(results.users[e].selection !== "none")}
+                            />
+                            <p>{e}</p>
+                        </li>
+                    ))}
                 </ul>
             </section>
             <style jsx>{`

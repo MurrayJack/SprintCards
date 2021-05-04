@@ -8,15 +8,15 @@ export interface ISprintCard {
     selected?: boolean
 }
 
-export default ({ card, selected, onClick, hoverable }: ISprintCard) => {
+export default ({ card, selected, onClick, hoverable, hidden }: ISprintCard) => {
     const handleOnClick = () => {
         onClick(card.caption)
     }
 
     const buildClassNames = () => {
         let names = "";
-        names += hoverable && "hoverable";
-
+        names += hoverable && " hoverable ";
+        names += hidden && " hidden "
         return names;
     }   
 
@@ -64,11 +64,11 @@ export default ({ card, selected, onClick, hoverable }: ISprintCard) => {
                     transform: scale(1.1);
                 }
 
-                button.hello {
+                button.hidden {
                     animation: example 1s infinite;
                 }
 
-                button.hello > div {
+                button.hidden > div {
                     opacity: 0;
                 }
 

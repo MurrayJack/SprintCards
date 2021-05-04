@@ -3,8 +3,8 @@ import { FiUser, FiHome } from 'react-icons/fi'
 import { useConnection } from '../context/ConnectionContext'
 
 export const Login = () => {
-    const [userName, setUserName] = useState<string>("user")
-    const [roomKey, setRoomKey] = useState<string>("room")
+    const [userName, setUserName] = useState<string>("")
+    const [roomKey, setRoomKey] = useState<string>("")
 
     const { connect, isConnected} = useConnection();
 
@@ -17,7 +17,7 @@ export const Login = () => {
         <>
             <article data-connected={isConnected}>
                 <form onSubmit={handleOnSubmit}>
-                    <h2>Connect to Sprint Cards {JSON.stringify(isConnected)}</h2>
+                    <h2>Connect to Sprint Cards</h2>
 
                     <label>
                         <span>Room Key:</span>

@@ -47,6 +47,7 @@ export const ConnectionProvider: FC = ({ children }) => {
 
     const handleClear = () => {
         setCurrentSelection(undefined)
+        setRevealed(false)
         socket.emit('clear', { room, user })
     }
 

@@ -11,7 +11,7 @@ export default () => {
                 <ul>
                     {cards.map((e) => (
                         <li key={e.caption}>
-                            <SprintCard onClick={select} hoverable card={e} hidden selected={selection === e.caption} />
+                            <SprintCard onClick={select} hoverable card={e} selected={selection === e.caption} />
                         </li>
                     ))}
                 </ul>
