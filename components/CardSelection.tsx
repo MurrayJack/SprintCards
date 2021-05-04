@@ -1,25 +1,30 @@
-import { ISprintCard } from './cards'
+import { useConnection } from '../context/ConnectionContext'
+import { ICard } from './cards'
 import SprintCard from './SprintCard'
+import cards from "./cards";
 
 export interface ICardSelectionProps {
-    answers: ISprintCard[]
+    answers: ICard[]
     revealed: boolean
     onCurrentClick: () => void
 }
 
-export const CardSelection = ({ answers, revealed, onCurrentClick }: ICardSelectionProps) => {
+export const CardSelection = () => {
+    const { results, isRevealed } = useConnection()
+
     const buildResults = () => {
         const items = []
-        for (var property in answers) {
-            if (answers.hasOwnProperty(property)) {
+        for (var property in results?.users) {
+            if (results?.users.hasOwnProperty(property)) {
                 items.push(
-                    <li>
+                    <li key={property}>
                         <SprintCard
-                            hide={!revealed}
-                            name={property}
-                            onClick={onCurrentClick}
-                            caption={answers[property].caption}
+                            
+                            // hide={!isRevealed}
+                            // name={property}
+                            // caption={results.users[property].selection}
                         />
+                        <p>{property}</p>
                     </li>,
                 )
             }
@@ -53,6 +58,16 @@ export const CardSelection = ({ answers, revealed, onCurrentClick }: ICardSelect
                     display: grid;
                     align-items: center;
                     justify-items: center;
+                }
+
+                p {
+                    font-size: 24px;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    text-align: center;
+                    width: 170px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
             `}</style>
         </>

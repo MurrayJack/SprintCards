@@ -1,35 +1,38 @@
-import { useState, useEffect } from 'react'
-import { FiUser } from 'react-icons/fi'
+import { useEffect, useState } from 'react'
+import { FiUser, FiHome } from 'react-icons/fi'
+import { useConnection } from '../context/ConnectionContext'
 
-export interface ICardsConnectionProps {
-    onConnect: (userName: string) => void
-    connected: boolean
-}
+export const Login = () => {
+    const [userName, setUserName] = useState<string>("user")
+    const [roomKey, setRoomKey] = useState<string>("room")
 
-export const CardsConnection = ({ onConnect, connected }: ICardsConnectionProps) => {
-    const [userName, setUserName] = useState<string>()
+    const { connect, isConnected} = useConnection();
 
     const handleOnSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
-
-        window.localStorage.setItem('sprint-cards-name', userName)
-
-        onConnect(userName)
+        e.preventDefault();
+        connect(roomKey, userName)
     }
-
-    useEffect(() => {
-        const localName = window.localStorage.getItem('sprint-cards-name')
-
-        if (localName) {
-            setUserName(localName)
-        }
-    }, [])
 
     return (
         <>
-            <article data-connected={connected}>
+            <article data-connected={isConnected}>
                 <form onSubmit={handleOnSubmit}>
-                    <h2>Connect to Sprint Cards</h2>
+                    <h2>Connect to Sprint Cards {JSON.stringify(isConnected)}</h2>
+
+                    <label>
+                        <span>Room Key:</span>
+
+                        <div><FiHome /></div>
+
+                        <input
+                            autoFocus
+                            required
+                            value={roomKey}
+                            onChange={(e) => setRoomKey(e.target.value)}
+                            placeholder="please enter a room key"
+                        />
+                    </label>
+
                     <label>
                         <span>Name:</span>
 
@@ -38,7 +41,6 @@ export const CardsConnection = ({ onConnect, connected }: ICardsConnectionProps)
                         </div>
 
                         <input
-                            autoFocus
                             required
                             value={userName}
                             onChange={(e) => setUserName(e.target.value)}

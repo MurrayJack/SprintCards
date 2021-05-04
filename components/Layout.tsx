@@ -56,6 +56,7 @@ export const Layout: FC = ({ children }) => (
                 -webkit-text-size-adjust: 100%;
                 scroll-behavior: smooth;
                 font-size: 100%;
+                user-select: none;
             }
 
             body {

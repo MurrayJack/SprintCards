@@ -3,12 +3,12 @@ import { MdDirectionsBike, MdAirplanemodeActive } from 'react-icons/md'
 import { GiDutchBike, GiScooter, GiCityCar, GiFireworkRocket } from 'react-icons/gi'
 import { IconType } from 'react-icons'
 
-export interface ISprintCard {
+export interface ICard {
     caption: string
     icon: IconType
 }
 
-const cards: ISprintCard[] = [
+const cards: ICard[] = [
     {
         caption: '1',
         icon: MdDirectionsBike,

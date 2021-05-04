@@ -1,51 +1,40 @@
-import cards from './cards'
+import cards, { ICard } from './cards'
 
 export interface ISprintCard {
-    current?: string
-    caption: string
-    onClick: (item: string) => void
-    name?: string
-    disabled?: boolean
-    hide?: boolean
+    card?: ICard
+    onClick?: (item: string) => void
+    hidden?: boolean
+    hoverable?: boolean
+    selected?: boolean
 }
 
-export default ({ current, caption, onClick, name = '', disabled, hide = false }: ISprintCard) => {
-    // Do things here
-
+export default ({ card, selected, onClick, hoverable }: ISprintCard) => {
     const handleOnClick = () => {
-        onClick(caption)
+        onClick(card.caption)
     }
 
-    const Icon = () => {
-        if (caption !== '0') {
-            const icon = cards.filter((e) => e.caption === caption)[0].icon
-            return icon(null)
-        }
+    const buildClassNames = () => {
+        let names = "";
+        names += hoverable && "hoverable";
 
-        return <div></div>
-    }
-
-    const Caption = () => {
-        return <div>{caption !== '0' ? caption : ''}</div>
-    }
+        return names;
+    }   
 
     return (
         <>
             <>
                 <button
-                    className={caption !== '0' && hide ? 'hello' : ''}
-                    aria-current={current === caption}
+                    className={buildClassNames()}
+                    aria-current={selected}
                     onClick={handleOnClick}
-                    disabled={disabled}
                 >
                     <div>
-                        <Icon />
+                        {card && card.icon(null)}
                     </div>
                     <div>
-                        <Caption />
+                        {card && card.caption}
                     </div>
                 </button>
-                <p>{name}</p>
             </>
             <style jsx>{`
                 @keyframes example {
@@ -71,7 +60,7 @@ export default ({ current, caption, onClick, name = '', disabled, hide = false }
                     position: relative;
                 }
 
-                button:hover {
+                button.hoverable:hover {
                     transform: scale(1.1);
                 }
 
@@ -99,16 +88,6 @@ export default ({ current, caption, onClick, name = '', disabled, hide = false }
 
                 button[disabled] {
                     opacity: 0.4;
-                }
-
-                p {
-                    font-size: 24px;
-                    font-weight: bold;
-                    text-transform: uppercase;
-                    text-align: center;
-                    width: 170px;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
                 }
             `}</style>
         </>

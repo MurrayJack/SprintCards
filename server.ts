@@ -1,5 +1,5 @@
-const app = require("express")()
-const server = require("http").Server(app)
+const app = require('express')()
+const server = require('http').Server(app)
 const io = require('socket.io')(server)
 const next = require('next')
 
@@ -9,44 +9,64 @@ const nextHandler = nextApp.getRequestHandler()
 
 let port = 80
 
-let answers = {};
+let rooms = {}
 
-io.on('connect', socket => {
-    socket.on("send result", ({ name, sp }) => {
-        console.log({ name, sp })
-        answers[name] = sp;
-        socket.broadcast.emit('reply answers', answers);
-    });
+io.sockets.on('connection', (socket) => {
+    socket.on('room', function ({ room, user }) {
+        socket.join(room)
 
-    socket.on("send clear", () => {
-        for (var property in answers) {
-            if (answers.hasOwnProperty(property)) {
-                answers[property] = "0"
+        const cards = getARoom(room)
+
+        cards.users[user] = { selection: 'none' }
+
+        io.sockets.in(room).emit('message', `Welcome ${user} to ${room}`)
+        io.sockets.in(room).emit('update', cards)
+    })
+
+    socket.on('selection', ({ room, user, selection }) => {
+        const cards = getARoom(room)
+
+        if (selection) {
+            cards.users[user] = { selection }
+        } else {
+            cards.users[user] = { selection: 'none' }
+        }
+
+        console.log(room, user, selection, cards)
+
+        io.sockets.in(room).emit('message', `User ${user} selected ${selection?.caption}`)
+        io.sockets.in(room).emit('update', cards)
+    })
+
+    socket.on('reveal', ({ room, user }) => {
+        io.sockets.in(room).emit('message', `User ${user} revealed ${room}`)
+        io.sockets.in(room).emit('reveal')
+    })
+
+    socket.on('clear', ({ room, user }) => {
+        const cards = getARoom(room)
+
+        for (var property in cards.users) {
+            if (cards.users.hasOwnProperty(property)) {
+                cards.users[property] = { selection: 'none' }
             }
         }
-        socket.broadcast.emit('reply clear', answers)
-    });
 
-    socket.on('disconnect', data => { 
-        console.log(data)
-        console.log('user disconnected!')
-    })
-
-    socket.on('send_connection', ({ name }) => {
-        answers[name] = "0"
-        socket.broadcast.emit('reply_connection', answers)
-    })
-
-    socket.on('send reveal', () => {
-        socket.broadcast.emit('reply reveal')
-    })
-
-    socket.on('clear_users', () => {
-        console.log("clear_users")
-        answers = {}
-        socket.broadcast.emit('force_disconnect')
+        io.sockets.in(room).emit('message', `User ${user} cleared ${room}`)
+        io.sockets.in(room).emit('update', cards)
     })
 })
+
+const getARoom = (room) => {
+    if (!rooms[room]) {
+        rooms[room] = {
+            room,
+            users: {},
+        }
+    }
+
+    return rooms[room]
+}
 
 nextApp.prepare().then(() => {
     app.get('*', (req, res) => {
