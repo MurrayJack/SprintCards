@@ -1,7 +1,12 @@
-import SprintCard from "./SprintCard";
-import cards from "./cards";
+import SprintCard from './SprintCard'
+import cards, { ISprintCard } from './cards'
 
-export default ({ current, onclick }) => {
+export interface ISprintCardOptions {
+    current: string
+    onclick: () => void
+}
+
+export default ({ current, onclick }: ISprintCardOptions) => {
     return (
         <>
             <section>
@@ -41,7 +46,5 @@ export default ({ current, onclick }) => {
                 }
             `}</style>
         </>
-    );
-};
-
-
+    )
+}

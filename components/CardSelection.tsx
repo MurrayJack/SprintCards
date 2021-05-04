@@ -1,8 +1,15 @@
-import SprintCard from "./SprintCard";
+import { ISprintCard } from './cards'
+import SprintCard from './SprintCard'
 
-export const CardSelection = ({ answers, current, revealed, property, handleCurrentClick }) => {
+export interface ICardSelectionProps {
+    answers: ISprintCard[]
+    revealed: boolean
+    onCurrentClick: () => void
+}
+
+export const CardSelection = ({ answers, revealed, onCurrentClick }: ICardSelectionProps) => {
     const buildResults = () => {
-        const items = [];
+        const items = []
         for (var property in answers) {
             if (answers.hasOwnProperty(property)) {
                 items.push(
@@ -10,15 +17,15 @@ export const CardSelection = ({ answers, current, revealed, property, handleCurr
                         <SprintCard
                             hide={!revealed}
                             name={property}
-                            onClick={handleCurrentClick}
-                            caption={answers[property]}
+                            onClick={onCurrentClick}
+                            caption={answers[property].caption}
                         />
                     </li>,
-                );
+                )
             }
         }
-        return items;
-    };
+        return items
+    }
 
     return (
         <>
@@ -49,5 +56,5 @@ export const CardSelection = ({ answers, current, revealed, property, handleCurr
                 }
             `}</style>
         </>
-    );
-};
+    )
+}

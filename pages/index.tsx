@@ -9,7 +9,7 @@ import { CardSelection } from "../components/CardSelection";
 const Home = () => {
     const [connected, setConnected] = useState(false);
     const [answers, setAnswers] = useState([]);
-    const [current, setCurrent] = useState();
+    const [current, setCurrent] = useState("");
     const [name, setName] = useState("");
     const [revealed, setRevealed] = useState(false);
 
@@ -44,7 +44,7 @@ const Home = () => {
         //     // The Admin has reset all the users
         socket.on("force_disconnect", () => {
             setConnected(false);
-            setAnswers();
+            setAnswers([]);
             setCurrent("");
         });
 
@@ -79,7 +79,7 @@ const Home = () => {
                 <main>
                     <SprintCardOptions current={current} onclick={handleCurrentClick} />
 
-                    {connected ? <CardSelection revealed={revealed} answers={answers} current={current} /> : <div></div>}
+                    {connected ? <CardSelection revealed={revealed} answers={answers} /> : <div></div>}
 
                     <CardsFooter onHandleReveal={handleReveal} onHandleClear={handleClear} />
                 </main>

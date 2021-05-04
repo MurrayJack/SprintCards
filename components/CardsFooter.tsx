@@ -1,4 +1,9 @@
-export const CardsFooter = ({ onHandleReveal, onHandleClear }) => (
+export interface ICardsFooterProps {
+    onHandleReveal: () => void
+    onHandleClear: () => void
+}
+
+export const CardsFooter = ({ onHandleReveal, onHandleClear }: ICardsFooterProps) => (
     <>
         <footer>
             <button onClick={onHandleReveal}>Reveal</button>
@@ -20,7 +25,6 @@ export const CardsFooter = ({ onHandleReveal, onHandleClear }) => (
             button:hover {
                 background-color: var(--color-accent-color);
             }
-
         `}</style>
     </>
-);
+)

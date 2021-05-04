@@ -1,30 +1,39 @@
-import cards from "./cards";
+import cards from './cards'
 
-export default ({ current, caption, onClick, name = "", disabled, hide = false }) => {
+export interface ISprintCard {
+    current?: string
+    caption: string
+    onClick: (item: string) => void
+    name?: string
+    disabled?: boolean
+    hide?: boolean
+}
+
+export default ({ current, caption, onClick, name = '', disabled, hide = false }: ISprintCard) => {
     // Do things here
 
     const handleOnClick = () => {
-        onClick(caption);
-    };
+        onClick(caption)
+    }
 
     const Icon = () => {
-        if (caption !== "0") {
-            const icon = cards.filter((e) => e.caption === caption)[0].icon;
-            return icon();
+        if (caption !== '0') {
+            const icon = cards.filter((e) => e.caption === caption)[0].icon
+            return icon(null)
         }
 
-        return <div></div>;
-    };
+        return <div></div>
+    }
 
     const Caption = () => {
-        return <div>{caption !== "0" ? caption : ""}</div>;
-    };
+        return <div>{caption !== '0' ? caption : ''}</div>
+    }
 
     return (
         <>
             <>
                 <button
-                    className={caption !== "0" && hide ? "hello" : ""}
+                    className={caption !== '0' && hide ? 'hello' : ''}
                     aria-current={current === caption}
                     onClick={handleOnClick}
                     disabled={disabled}
@@ -81,7 +90,7 @@ export default ({ current, caption, onClick, name = "", disabled, hide = false }
                 div:first-of-type {
                 }
 
-                button[aria-current="true"] {
+                button[aria-current='true'] {
                     transform: scale(1.1);
                     z-index: 1;
                     border: 5px solid var(--color-accent-color);
@@ -103,5 +112,5 @@ export default ({ current, caption, onClick, name = "", disabled, hide = false }
                 }
             `}</style>
         </>
-    );
-};
+    )
+}

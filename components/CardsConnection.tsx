@@ -1,25 +1,29 @@
-import { useState, useEffect } from "react";
-import { FiUser } from "react-icons/fi";
+import { useState, useEffect } from 'react'
+import { FiUser } from 'react-icons/fi'
 
-export const CardsConnection = ({ onConnect, connected }) => {
-    const [userName, setUserName] = useState();
-    const [rememberMe, setRememberMe] = useState(false);
+export interface ICardsConnectionProps {
+    onConnect: (userName: string) => void
+    connected: boolean
+}
 
-    const handleOnSubmit = (e) => {
-        e.preventDefault();
+export const CardsConnection = ({ onConnect, connected }: ICardsConnectionProps) => {
+    const [userName, setUserName] = useState<string>()
 
-        window.localStorage.setItem("sprint-cards-name", userName);
+    const handleOnSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
 
-        onConnect(userName);
-    };
+        window.localStorage.setItem('sprint-cards-name', userName)
+
+        onConnect(userName)
+    }
 
     useEffect(() => {
-        const localName = window.localStorage.getItem("sprint-cards-name");
+        const localName = window.localStorage.getItem('sprint-cards-name')
 
         if (localName) {
-            setUserName(localName);
+            setUserName(localName)
         }
-    }, []);
+    }, [])
 
     return (
         <>
@@ -59,11 +63,11 @@ export const CardsConnection = ({ onConnect, connected }) => {
                     transition: opacity ease-in-out 0.2s;
                 }
 
-                article[data-connected="false"] {
+                article[data-connected='false'] {
                     opacity: 0.95;
                 }
 
-                article[data-connected="true"] {
+                article[data-connected='true'] {
                     opacity: 0;
                     pointer-events: none;
                 }
@@ -96,5 +100,5 @@ export const CardsConnection = ({ onConnect, connected }) => {
                 }
             `}</style>
         </>
-    );
-};
+    )
+}

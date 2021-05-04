@@ -1,4 +1,6 @@
-export const Layout = ({ children }) => (
+import { FC } from 'react'
+
+export const Layout: FC = ({ children }) => (
     <>
         {children}
 
@@ -48,8 +50,8 @@ export const Layout = ({ children }) => (
             }
 
             html {
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
-                    "Open Sans", "Helvetica Neue", sans-serif;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+                    'Open Sans', 'Helvetica Neue', sans-serif;
                 -ms-text-size-adjust: 100%;
                 -webkit-text-size-adjust: 100%;
                 scroll-behavior: smooth;
@@ -74,11 +76,11 @@ export const Layout = ({ children }) => (
                 text-transform: uppercase;
             }
 
-            button[type="submit"] {
+            button[type='submit'] {
                 background: var(--color-accent-color);
             }
 
-            button[type="submit"]:hover {
+            button[type='submit']:hover {
                 background: var(--button-bg-color);
             }
 
@@ -107,7 +109,7 @@ export const Layout = ({ children }) => (
             }
         `}</style>
     </>
-);
+)
 
 {
     /* 
