@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "go": "next build && next start",
-    "dev": "node server.ts",
+    "dev": "node server.js",
     "build": "next build",
     "start": "NODE_ENV=production node server.ts",
     "docker:build": "docker build -t luxteamregistry.azurecr.io/storycards .",

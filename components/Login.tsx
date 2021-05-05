@@ -1,4 +1,5 @@
 import { FC, InputHTMLAttributes, useEffect, useState } from 'react'
+import { IconType } from 'react-icons'
 import { FiUser, FiHome } from 'react-icons/fi'
 import { useConnection } from '../context/ConnectionContext'
 
@@ -35,6 +36,8 @@ export const Login = ({ type }: ILoginProps) => {
                     <h2>Connect to Sprint Cards</h2>
 
                     <InputControl
+                        autoFocus
+                        icon={FiUser}
                         placeholder="please enter your name"
                         label="Name"
                         value={userName}
@@ -43,6 +46,7 @@ export const Login = ({ type }: ILoginProps) => {
 
                     {type === 'Full' && (
                         <InputControl
+                            icon={FiHome}
                             placeholder="please enter a room name"
                             label="Room"
                             value={roomKey}
@@ -89,24 +93,20 @@ export const Login = ({ type }: ILoginProps) => {
     )
 }
 
-const InputControl: FC<InputHTMLAttributes<HTMLInputElement> & { label: string }> = (props) => {
+const InputControl: FC<InputHTMLAttributes<HTMLInputElement> & { icon: IconType; label: string }> = ({
+    icon: Icon,
+    ...props
+}) => {
     return (
         <>
             <label>
                 <span>{props.label}:</span>
 
                 <div>
-                    <FiHome />
+                    <Icon />
                 </div>
 
-                <input
-                    autoFocus
-                    required
-                    {...props}
-                    // value={roomKey}
-                    // onChange={(e) => setRoomKey(e.target.value)}
-                    // placeholder="please enter a room key"
-                />
+                <input required {...props} />
             </label>
             <style jsx>{`
                 label {
