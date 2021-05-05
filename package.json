@@ -6,7 +6,7 @@
     "go": "next build && next start",
     "dev": "node server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server.ts",
+    "start": "NODE_ENV=production node server.js",
     "docker:build": "docker build -t luxteamregistry.azurecr.io/storycards .",
     "docker:publish": "docker push luxteamregistry.azurecr.io/storycards"
   },
