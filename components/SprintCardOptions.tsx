@@ -1,14 +1,17 @@
-import SprintCard from "./SprintCard";
-import cards from "./cards";
+import SprintCard from './SprintCard'
+import cards, { ICard } from './cards'
+import { useConnection } from '../context/ConnectionContext'
 
-export default ({ current, onclick }) => {
+export default () => {
+    const { selection, select } = useConnection()
+
     return (
         <>
             <section>
                 <ul>
                     {cards.map((e) => (
-                        <li>
-                            <SprintCard key={e.caption} current={current} onClick={onclick} {...e} />
+                        <li key={e.caption}>
+                            <SprintCard onClick={select} hoverable card={e} selected={selection === e.caption} />
                         </li>
                     ))}
                 </ul>
@@ -41,7 +44,5 @@ export default ({ current, onclick }) => {
                 }
             `}</style>
         </>
-    );
-};
-
-
+    )
+}

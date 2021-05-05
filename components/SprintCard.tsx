@@ -1,42 +1,40 @@
-import cards from "./cards";
+import cards, { ICard } from './cards'
 
-export default ({ current, caption, onClick, name = "", disabled, hide = false }) => {
-    // Do things here
+export interface ISprintCard {
+    card?: ICard
+    onClick?: (item: string) => void
+    hidden?: boolean
+    hoverable?: boolean
+    selected?: boolean
+}
 
+export default ({ card, selected, onClick, hoverable, hidden }: ISprintCard) => {
     const handleOnClick = () => {
-        onClick(caption);
-    };
+        onClick(card.caption)
+    }
 
-    const Icon = () => {
-        if (caption !== "0") {
-            const icon = cards.filter((e) => e.caption === caption)[0].icon;
-            return icon();
-        }
-
-        return <div></div>;
-    };
-
-    const Caption = () => {
-        return <div>{caption !== "0" ? caption : ""}</div>;
-    };
+    const buildClassNames = () => {
+        let names = "";
+        names += hoverable && " hoverable ";
+        names += hidden && " hidden "
+        return names;
+    }   
 
     return (
         <>
             <>
                 <button
-                    className={caption !== "0" && hide ? "hello" : ""}
-                    aria-current={current === caption}
+                    className={buildClassNames()}
+                    aria-current={selected}
                     onClick={handleOnClick}
-                    disabled={disabled}
                 >
                     <div>
-                        <Icon />
+                        {card && card.icon(null)}
                     </div>
                     <div>
-                        <Caption />
+                        {card && card.caption}
                     </div>
                 </button>
-                <p>{name}</p>
             </>
             <style jsx>{`
                 @keyframes example {
@@ -62,15 +60,15 @@ export default ({ current, caption, onClick, name = "", disabled, hide = false }
                     position: relative;
                 }
 
-                button:hover {
+                button.hoverable:hover {
                     transform: scale(1.1);
                 }
 
-                button.hello {
+                button.hidden {
                     animation: example 1s infinite;
                 }
 
-                button.hello > div {
+                button.hidden > div {
                     opacity: 0;
                 }
 
@@ -81,7 +79,7 @@ export default ({ current, caption, onClick, name = "", disabled, hide = false }
                 div:first-of-type {
                 }
 
-                button[aria-current="true"] {
+                button[aria-current='true'] {
                     transform: scale(1.1);
                     z-index: 1;
                     border: 5px solid var(--color-accent-color);
@@ -91,17 +89,7 @@ export default ({ current, caption, onClick, name = "", disabled, hide = false }
                 button[disabled] {
                     opacity: 0.4;
                 }
-
-                p {
-                    font-size: 24px;
-                    font-weight: bold;
-                    text-transform: uppercase;
-                    text-align: center;
-                    width: 170px;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                }
             `}</style>
         </>
-    );
-};
+    )
+}

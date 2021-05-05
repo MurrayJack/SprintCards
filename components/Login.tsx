@@ -1,31 +1,38 @@
-import { useState, useEffect } from "react";
-import { FiUser } from "react-icons/fi";
+import { useEffect, useState } from 'react'
+import { FiUser, FiHome } from 'react-icons/fi'
+import { useConnection } from '../context/ConnectionContext'
 
-export const CardsConnection = ({ onConnect, connected }) => {
-    const [userName, setUserName] = useState();
-    const [rememberMe, setRememberMe] = useState(false);
+export const Login = () => {
+    const [userName, setUserName] = useState<string>("")
+    const [roomKey, setRoomKey] = useState<string>("")
 
-    const handleOnSubmit = (e) => {
+    const { connect, isConnected} = useConnection();
+
+    const handleOnSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-
-        window.localStorage.setItem("sprint-cards-name", userName);
-
-        onConnect(userName);
-    };
-
-    useEffect(() => {
-        const localName = window.localStorage.getItem("sprint-cards-name");
-
-        if (localName) {
-            setUserName(localName);
-        }
-    }, []);
+        connect(roomKey, userName)
+    }
 
     return (
         <>
-            <article data-connected={connected}>
+            <article data-connected={isConnected}>
                 <form onSubmit={handleOnSubmit}>
                     <h2>Connect to Sprint Cards</h2>
+
+                    <label>
+                        <span>Room Key:</span>
+
+                        <div><FiHome /></div>
+
+                        <input
+                            autoFocus
+                            required
+                            value={roomKey}
+                            onChange={(e) => setRoomKey(e.target.value)}
+                            placeholder="please enter a room key"
+                        />
+                    </label>
+
                     <label>
                         <span>Name:</span>
 
@@ -34,7 +41,6 @@ export const CardsConnection = ({ onConnect, connected }) => {
                         </div>
 
                         <input
-                            autoFocus
                             required
                             value={userName}
                             onChange={(e) => setUserName(e.target.value)}
@@ -59,11 +65,11 @@ export const CardsConnection = ({ onConnect, connected }) => {
                     transition: opacity ease-in-out 0.2s;
                 }
 
-                article[data-connected="false"] {
+                article[data-connected='false'] {
                     opacity: 0.95;
                 }
 
-                article[data-connected="true"] {
+                article[data-connected='true'] {
                     opacity: 0;
                     pointer-events: none;
                 }
@@ -96,5 +102,5 @@ export const CardsConnection = ({ onConnect, connected }) => {
                 }
             `}</style>
         </>
-    );
-};
+    )
+}
