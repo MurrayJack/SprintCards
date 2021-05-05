@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { FC, InputHTMLAttributes, useEffect, useState } from 'react'
 import { FiUser, FiHome } from 'react-icons/fi'
 import { useConnection } from '../context/ConnectionContext'
 
@@ -34,36 +34,21 @@ export const Login = ({ type }: ILoginProps) => {
                 <form onSubmit={handleOnSubmit}>
                     <h2>Connect to Sprint Cards</h2>
 
-                    <label>
-                        <span>Room:</span>
+                    <InputControl
+                        placeholder="please enter your name"
+                        label="Name"
+                        value={userName}
+                        onChange={(e) => setUserName(e.target.value)}
+                    />
 
-                        <div>
-                            <FiHome />
-                        </div>
-
-                        <input
-                            autoFocus
-                            required
+                    {type === 'Full' && (
+                        <InputControl
+                            placeholder="please enter a room name"
+                            label="Room"
                             value={roomKey}
                             onChange={(e) => setRoomKey(e.target.value)}
-                            placeholder="please enter a room key"
                         />
-                    </label>
-
-                    <label>
-                        <span>Name:</span>
-
-                        <div>
-                            <FiUser />
-                        </div>
-
-                        <input
-                            required
-                            value={userName}
-                            onChange={(e) => setUserName(e.target.value)}
-                            placeholder="please enter your name"
-                        />
-                    </label>
+                    )}
 
                     <button type="submit">Connect</button>
                 </form>
@@ -99,7 +84,31 @@ export const Login = ({ type }: ILoginProps) => {
                     grid-gap: var(--gaps-xxlarge);
                     background: var(--main-bg-color2);
                 }
+            `}</style>
+        </>
+    )
+}
 
+const InputControl: FC<InputHTMLAttributes<HTMLInputElement> & { label: string }> = (props) => {
+    return (
+        <>
+            <label>
+                <span>{props.label}:</span>
+
+                <div>
+                    <FiHome />
+                </div>
+
+                <input
+                    autoFocus
+                    required
+                    {...props}
+                    // value={roomKey}
+                    // onChange={(e) => setRoomKey(e.target.value)}
+                    // placeholder="please enter a room key"
+                />
+            </label>
+            <style jsx>{`
                 label {
                     position: relative;
                     display: grid;
