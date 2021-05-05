@@ -26,6 +26,6 @@
     "next-env.d.ts",
     "global.d.ts",
     "**/*.ts",
-    "**/*.tsx"
-  ]
+    "**/*.tsx", 
+    "server.js"  ]
 }
