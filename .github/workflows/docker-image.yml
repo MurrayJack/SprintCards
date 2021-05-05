@@ -11,7 +11,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
@@ -25,11 +25,9 @@ jobs:
     - name: Build
       run: npm build
 
-
-    # steps:
-    # - uses: actions/checkout@v2
-    # - name: Build the Docker image
-    #   run: docker build . --file Dockerfile --tag sprintcards:$(date +%s)
+    steps:
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag sprintcards:$(date +%s)
 
     # steps:
     #   - name: Check out the repo
