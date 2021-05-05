@@ -10,6 +10,8 @@ export interface IContext {
     isConnected: boolean
     isRevealed?: boolean
     selection?: string
+    user?: string
+    room?: string
     results?: {
         room: string
         users: { [key: string]: { selection: string } }
@@ -21,9 +23,9 @@ export const ConnectionContext = createContext<IContext>({
     isConnected: false,
 })
 
-export const ConnectionProvider: FC = ({ children }) => {
+export const ConnectionProvider: FC<{ room?: string }> = ({ children, room: initialRoom }) => {
     const [isConnected, setConnected] = useState(false)
-    const [room, setRoom] = useState('')
+    const [room, setRoom] = useState(initialRoom)
     const [user, setUser] = useState('')
     const [selection, setCurrentSelection] = useState<string>()
     const [isRevealed, setRevealed] = useState<boolean>()
@@ -98,6 +100,8 @@ export const ConnectionProvider: FC = ({ children }) => {
                 isRevealed,
                 isConnected,
                 results,
+                user,
+                room,
             }}
         >
             {children}

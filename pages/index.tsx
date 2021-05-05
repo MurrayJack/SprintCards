@@ -1,13 +1,8 @@
-import React from "react"
-import { App } from "../components/app"
-import { ConnectionProvider } from "../context/ConnectionContext"
+import React from 'react'
+import { Login } from '../components/Login'
 
 const Home = () => {
-    return (
-        <ConnectionProvider>
-            <App />            
-        </ConnectionProvider>
-    )
+    return <Login type="Full" />
 }
 
 export default Home

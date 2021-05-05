@@ -2,16 +2,31 @@ import { useEffect, useState } from 'react'
 import { FiUser, FiHome } from 'react-icons/fi'
 import { useConnection } from '../context/ConnectionContext'
 
-export const Login = () => {
-    const [userName, setUserName] = useState<string>("")
-    const [roomKey, setRoomKey] = useState<string>("")
+export interface ILoginProps {
+    type: 'Name' | 'Full'
+}
 
-    const { connect, isConnected} = useConnection();
+export const Login = ({ type }: ILoginProps) => {
+    const { connect, isConnected, room } = useConnection()
+
+    const [userName, setUserName] = useState<string>('')
+    const [roomKey, setRoomKey] = useState<string>(room)
 
     const handleOnSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
+        e.preventDefault()
         connect(roomKey, userName)
     }
+
+    useEffect(() => {
+        const name = window.localStorage.getItem('username')
+        if (name) {
+            setUserName(name)
+        }
+    }, [])
+
+    useEffect(() => {
+        window.localStorage.setItem('username', userName)
+    }, [userName])
 
     return (
         <>
@@ -20,9 +35,11 @@ export const Login = () => {
                     <h2>Connect to Sprint Cards</h2>
 
                     <label>
-                        <span>Room Key:</span>
+                        <span>Room:</span>
 
-                        <div><FiHome /></div>
+                        <div>
+                            <FiHome />
+                        </div>
 
                         <input
                             autoFocus
