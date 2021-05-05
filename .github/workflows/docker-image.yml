@@ -25,7 +25,6 @@ jobs:
     - name: Build
       run: npm build
 
-    steps:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag sprintcards:$(date +%s)
 
