@@ -11,24 +11,32 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
-    steps:
-    - name: Build the App
-      run: npm ci
-      run: npm run build
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag sprintcards:$(date +%s)
-
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
-      - name: Push to Docker Hub
-        uses: docker/build-push-action@v1
+      steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: murrayjack/sprintcards
-          tag_with_ref: true
+          node-version: '14'
+          check-latest: true
+      - name: Install packages
+        run: npm install
+      # - name: Run tests
+      #   run: npm test
+      - name: Build
+        run: npm build
+
+
+    # steps:
+    # - uses: actions/checkout@v2
+    # - name: Build the Docker image
+    #   run: docker build . --file Dockerfile --tag sprintcards:$(date +%s)
+
+    # steps:
+    #   - name: Check out the repo
+    #     uses: actions/checkout@v2
+    #   - name: Push to Docker Hub
+    #     uses: docker/build-push-action@v1
+    #     with:
+    #       username: ${{ secrets.DOCKER_USERNAME }}
+    #       password: ${{ secrets.DOCKER_PASSWORD }}
+    #       repository: murrayjack/sprintcards
+    #       tag_with_ref: true
