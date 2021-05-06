@@ -33,8 +33,11 @@ io.sockets.on('connection', (socket) => {
         }
 
         console.log(room, user, selection, cards)
+        
+        if (selection) {
+            io.sockets.in(room).emit('message', `User ${user} selected ${selection.caption}`)
+        }
 
-        io.sockets.in(room).emit('message', `User ${user} selected ${selection?.caption}`)
         io.sockets.in(room).emit('update', cards)
     })
 
