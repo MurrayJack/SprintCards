@@ -1,14 +1,17 @@
 import React from 'react'
 import { App } from '../components/app'
 import { Layout } from '../components/Layout'
-import { Login } from '../components/Login'
+import { Login } from '../components/login'
 import { ConnectionProvider, useConnection } from '../context/ConnectionContext'
+import { ToastProvider } from 'react-toast-notifications'
 
 const Home = () => {
     return (
-        <ConnectionProvider>
-            <Application />
-        </ConnectionProvider>
+        <ToastProvider>
+            <ConnectionProvider>
+                <Application />
+            </ConnectionProvider>
+        </ToastProvider>
     )
 }
 
@@ -17,7 +20,7 @@ const Application = () => {
 
     return (
         <Layout>
-            {!isConnected && <Login type="Full" />}
+            {!isConnected && <Login />}
             {isConnected && <App />}
         </Layout>
     )

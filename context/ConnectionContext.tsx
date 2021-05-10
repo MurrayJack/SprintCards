@@ -1,9 +1,11 @@
 import { createContext, FC, useContext, useEffect, useState } from 'react'
 import io from 'socket.io-client'
 import { ICard } from '../components/cards'
+import { ToastProvider, useToasts } from 'react-toast-notifications'
 
 export interface IContext {
-    connect: (id: string, name: string) => void
+    create?: (room: string, name: string, password: string) => void
+    connect: (room: string, name: string, password: string) => void
     reveal?: () => void
     clear?: () => void
     select?: (card: string) => void
@@ -29,8 +31,12 @@ export const ConnectionProvider: FC<{ room?: string }> = ({ children, room: init
     const [user, setUser] = useState('')
     const [selection, setCurrentSelection] = useState<string>()
     const [isRevealed, setRevealed] = useState<boolean>()
-
+    const { addToast } = useToasts()
     const [results, setResults] = useState()
+
+    const handleCreate = (room: string, user: string, password: string) => {
+        socket.emit('create', { room, user, password })
+    }
 
     const handleSelect = (card: string) => {
         setCurrentSelection(card)
@@ -56,13 +62,27 @@ export const ConnectionProvider: FC<{ room?: string }> = ({ children, room: init
     let socket = io()
 
     useEffect(() => {
+        socket.on('error', function (data) {
+            addToast(data, { appearance: 'error', autoDismiss: true })
+            console.log(data)
+        })
+
+        socket.on('inRoom', function ({ room, user }) {
+            setRoom(room)
+            setUser(user)
+            setConnected(true)
+        })
+
+        socket.on('message', function (data) {
+            addToast(data, { appearance: 'success', autoDismiss: true })
+            console.log(data)
+        })
+    }, [])
+
+    useEffect(() => {
         if (isConnected) {
             socket.on('connect', function () {
                 socket.emit('room', { room, user })
-            })
-
-            socket.on('message', function (data) {
-                console.log(data)
             })
 
             socket.on('update', function (data) {
@@ -93,6 +113,7 @@ export const ConnectionProvider: FC<{ room?: string }> = ({ children, room: init
         <ConnectionContext.Provider
             value={{
                 selection,
+                create: handleCreate,
                 select: handleSelect,
                 connect: handleConnect,
                 reveal: handleReveal,

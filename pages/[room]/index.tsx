@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { App } from '../../components/app'
 import { Layout } from '../../components/Layout'
-import { Login } from '../../components/Login'
+import { Login } from '../../components/login'
 import { ConnectionProvider, useConnection } from '../../context/ConnectionContext'
 
 export default () => {
