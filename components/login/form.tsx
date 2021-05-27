@@ -11,9 +11,15 @@ interface INewRoomProps {
 export const NewRoom = ({ roomName }: INewRoomProps) => {
     const { connect } = useConnection()
     const [userName, setUserName] = useState<string>('')
-    const [roomKey, setRoomKey] = useState<string>(hri.random())
+    const [roomKey, setRoomKey] = useState<string>()
 
     useEffect(() => {
+        if (!roomName) {
+            setRoomKey(hri.random())
+        } else {
+            setRoomKey(roomName)
+        }
+
         const name = window.localStorage.getItem('username')
         if (name) {
             setUserName(name)
@@ -24,13 +30,8 @@ export const NewRoom = ({ roomName }: INewRoomProps) => {
         window.localStorage.setItem('username', userName)
     }, [userName])
 
-    useEffect(() => {
-        setRoomKey(roomName)
-    }, [roomName])
-
     const handleOnSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-
         connect(roomKey, userName)
     }
 
