@@ -56,6 +56,11 @@ async function getARoom(room) {
     return JSON.parse(item)
 }
 
+async function setARoom(room, cards) {
+    store[room] = cards
+    return JSON.parse(item)
+}
+
 nextApp.prepare().then(async () => {
     io.sockets.on('connection', async (socket) => {
         socket.on('create', async function ({ room, user }) {
@@ -92,6 +97,8 @@ nextApp.prepare().then(async () => {
                 cards.users[user] = { selection: 'none' }
             }
 
+            setARoom(room, cards)
+
             if (selection) {
                 io.sockets.in(room).emit('message', `User ${user} selected ${selection}`)
             }
@@ -109,7 +116,7 @@ nextApp.prepare().then(async () => {
             const cards = await getARoom(room)
 
             delete cards.users[name]
-            store[room] = cards
+            setARoom(room, cards)
 
             io.sockets.in(room).emit('message', `User ${name} kicked`)
             io.sockets.in(room).emit('kick', { name, cards })
