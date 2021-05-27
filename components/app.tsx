@@ -10,21 +10,32 @@ export const App = () => {
 
     return (
         <>
-            <main>
-                <Header />
+            <article>
+                <main>
+                    <Header />
 
-                <SprintCardOptions />
+                    <SprintCardOptions />
 
-                {isConnected ? <CardSelection /> : <div></div>}
+                    {isConnected ? <CardSelection /> : <div></div>}
 
-                <CardsFooter />
-            </main>
+                    <CardsFooter />
+                </main>
+            </article>
 
             <style jsx>{`
                 main {
                     display: grid;
                     grid-template-rows: 50px max-content 1fr 100px;
                     height: 100vh;
+                    width: 100vw;
+                    
+                }
+
+                article {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    display: grid;
+                    grid-auto-flow: column;
                 }
             `}</style>
         </>

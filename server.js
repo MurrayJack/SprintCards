@@ -10,8 +10,18 @@ const nextHandler = nextApp.getRequestHandler()
 
 let port = 8080
 
-bluebird.promisifyAll(redis.RedisClient.prototype)
-const cache = redis.createClient()
+// bluebird.promisifyAll(redis.RedisClient.prototype)
+// const cache = redis.createClient()
+const store = {}
+
+const cache = {
+    setAsync: async (name, item) => {
+        return (store[name] = JSON.parse(item))
+    },
+    getAsync: async (name) => {
+        return JSON.stringify(store[name])
+    },
+}
 
 async function createARoomAsync(room, user) {
     const data = {
@@ -29,7 +39,7 @@ async function joinARoomAsync(room, user) {
     const item = await cache.getAsync(room)
 
     let data
-    if (item === null) {
+    if (!item) {
         data = await createARoomAsync(room, user)
     } else {
         data = JSON.parse(item)
@@ -39,10 +49,6 @@ async function joinARoomAsync(room, user) {
 
     await cache.setAsync(room, JSON.stringify(data))
     return data
-}
-
-async function getRoomInfoAsync() {
-    //const item = await cache.getAsync(room)
 }
 
 nextApp.prepare().then(async () => {
@@ -103,7 +109,7 @@ nextApp.prepare().then(async () => {
             }
 
             io.sockets.in(room).emit('message', `User ${user} cleared ${room}`)
-            io.sockets.in(room).emit('update', cards)
+            io.sockets.in(room).emit('clear', cards)
         })
     })
 

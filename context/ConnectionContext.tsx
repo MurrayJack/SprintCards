@@ -84,6 +84,11 @@ export const ConnectionProvider: FC<{ room?: string }> = ({ children, room: init
                 setResults(data)
             })
 
+            socket.on('clear', function (data) {
+                setResults(data)
+                setRevealed(false)
+            })
+
             socket.on('reveal', function () {
                 if (!isRevealed) {
                     setRevealed(true)
