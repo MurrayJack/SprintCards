@@ -7,6 +7,7 @@ export interface IContext {
     reveal?: () => void
     clear?: () => void
     select?: (card: string) => void
+    kick?: (name) => void
     isConnected: boolean
     isRevealed?: boolean
     selection?: string
@@ -56,6 +57,10 @@ export const ConnectionProvider: FC<{ room?: string }> = ({ children, room: init
         socket.emit('clear', { room, user })
     }
 
+    const handleKick = (name) => {
+        socket.emit('kick', { room, name })
+    }
+
     let socket = io()
 
     useEffect(() => {
@@ -89,6 +94,13 @@ export const ConnectionProvider: FC<{ room?: string }> = ({ children, room: init
                 setRevealed(false)
             })
 
+            socket.on('kick', function ({ name, cards }) {
+                setResults(cards)
+                if (name === user)  {
+                    setConnected(false)
+                }
+            })
+
             socket.on('reveal', function () {
                 if (!isRevealed) {
                     setRevealed(true)
@@ -118,6 +130,7 @@ export const ConnectionProvider: FC<{ room?: string }> = ({ children, room: init
                 connect: handleConnect,
                 reveal: handleReveal,
                 clear: handleClear,
+                kick: handleKick,
                 isRevealed,
                 isConnected,
                 results,

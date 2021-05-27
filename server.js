@@ -51,6 +51,11 @@ async function joinARoomAsync(room, user) {
     return data
 }
 
+async function getARoom(room) {
+    const item = await cache.getAsync(room)
+    return JSON.parse(item)
+}
+
 nextApp.prepare().then(async () => {
     io.sockets.on('connection', async (socket) => {
         socket.on('create', async function ({ room, user }) {
@@ -96,6 +101,18 @@ nextApp.prepare().then(async () => {
         socket.on('reveal', ({ room, user }) => {
             io.sockets.in(room).emit('message', `User ${user} revealed ${room}`)
             io.sockets.in(room).emit('reveal')
+        })
+
+        socket.on('kick', async ({ room, name }) => {
+            socket.join(room)
+
+            const cards = await getARoom(room)
+
+            delete cards.users[name]
+            store[room] = cards
+
+            io.sockets.in(room).emit('message', `User ${name} kicked`)
+            io.sockets.in(room).emit('kick', { name, cards })
         })
 
         socket.on('clear', async ({ room, user }) => {

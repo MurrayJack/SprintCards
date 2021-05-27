@@ -16,7 +16,7 @@ export const Header = () => {
 
                 <HeaderButton icon={AiOutlineShareAlt} title="Share">
                     <>
-                        <input></input>
+                        <input value={window.location.href} />
                     </>
                 </HeaderButton>
 
@@ -39,6 +39,10 @@ export const Header = () => {
                     align-items: center;
                     padding: 0 16px;
                     grid-template-columns: auto 1fr auto auto auto;
+                }
+
+                input {
+                    width: 300px
                 }
 
                 h1 {

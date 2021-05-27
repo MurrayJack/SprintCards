@@ -1,18 +1,20 @@
 import { useConnection } from '../context/ConnectionContext'
+import { MdDelete } from 'react-icons/md'
 
 export default () => {
-    const { results } = useConnection()
+    const { results, kick } = useConnection()
 
     return (
         <>
             <div>
-                <h2>Current Members</h2>
                 <ul>
                     {results &&
                         Object.keys(results.users).map((e) => (
                             <li>
                                 <span>{e}</span>
-                                <button>kick</button>
+                                <button type="button" onClick={() => kick(e)}>
+                                    <MdDelete />
+                                </button>
                             </li>
                         ))}
                 </ul>
@@ -22,6 +24,8 @@ export default () => {
                     list-style: none;
                     padding: 0;
                     margin: 0;
+                    display: grid;
+                    gap: 16px;
                 }
 
                 li {
@@ -29,6 +33,23 @@ export default () => {
                     grid-template-columns: 1fr auto;
                     gap: 16px;
                     white-space: nowrap;
+                    align-items: center;
+                    justify-content: center;
+                    min-width: 300px;
+                }
+
+                button {
+                    height: 30px;
+                    width: 30px;
+                    padding: 0;
+                    margin: 0;
+                    display: grid;
+                    -webkit-align-items: center;
+                    -webkit-box-align: center;
+                    -ms-flex-align: center;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 16px;
                 }
             `}</style>
         </>
