@@ -1,4 +1,4 @@
-module.exports = class memoryStore {
+class memoryStore {
     store = {}
 
     constructor() {
@@ -12,8 +12,6 @@ module.exports = class memoryStore {
         }
         return this.store[roomName]
     }
-
-    getRoom(roomName) {}
 }
 
 class Room {
@@ -52,14 +50,4 @@ class Room {
     }
 }
 
-// const store = {}
-
-// function userRoomStore(room, user, func) {
-//     return new Promise((resolve) => {
-//         const storedRoom = store[room]
-//         const newRoomState = func(storedRoom[user])
-//         store[room].users[user] = newRoomState
-
-//         resolve(store[room])
-//     })
-// }
+module.exports = memoryStore
