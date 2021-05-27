@@ -85,17 +85,17 @@ export const ConnectionProvider: FC<{ room?: string }> = ({ children, room: init
                 socket.emit('room', { room, user })
             })
 
-            socket.on('update', function (data) {
-                setResults(data)
+            socket.on('update', function (room) {
+                setResults(room)
             })
 
-            socket.on('clear', function (data) {
-                setResults(data)
+            socket.on('clear', function (room) {
+                setResults(room)
                 setRevealed(false)
             })
 
-            socket.on('kick', function ({ name, cards }) {
-                setResults(cards)
+            socket.on('kick', function ({ name, room }) {
+                setResults(room)
                 if (name === user)  {
                     setConnected(false)
                 }
