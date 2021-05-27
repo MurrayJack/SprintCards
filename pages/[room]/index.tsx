@@ -17,11 +17,13 @@ export default () => {
 }
 
 const Application = () => {
-    const {isConnected} = useConnection()
+    const router = useRouter()
+    const { isConnected } = useConnection()
+    const { room } = router.query
 
     return (
         <Layout>
-            {!isConnected && <Login type="Name" />}
+            {!isConnected && <Login roomName={room as string} />}
             {isConnected && <App />}
         </Layout>
     )

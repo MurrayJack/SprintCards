@@ -1,5 +1,5 @@
 import { AiOutlineCoffee } from 'react-icons/ai'
-import { MdDirectionsBike, MdAirplanemodeActive } from 'react-icons/md'
+import { MdAccessibility, MdDirectionsBike, MdAirplanemodeActive } from 'react-icons/md'
 import { GiDutchBike, GiScooter, GiCityCar, GiFireworkRocket } from 'react-icons/gi'
 import { IconType } from 'react-icons'
 
@@ -11,7 +11,7 @@ export interface ICard {
 const cards: ICard[] = [
     {
         caption: '1',
-        icon: MdDirectionsBike,
+        icon: MdAccessibility,
     },
     {
         caption: '2',

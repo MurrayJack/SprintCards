@@ -8,31 +8,32 @@ const dev = process.env.NODE_ENV !== 'production'
 const nextApp = next({ dev })
 const nextHandler = nextApp.getRequestHandler()
 
-let port = 80
+let port = 8080
 
 bluebird.promisifyAll(redis.RedisClient.prototype)
 const cache = redis.createClient()
 
-async function createARoomAsync(room, user, password) {
-    const item = await cache.getAsync(room)
-    if (!item) {
-        const data = {
-            room,
-            password,
-            users: {},
-        }
-        data.users[user] = { selection: 'none' }
-
-        await cache.setAsync(room, JSON.stringify(data))
-        return data
+async function createARoomAsync(room, user) {
+    const data = {
+        room,
+        users: {},
     }
+    data.users[user] = { selection: 'none' }
 
-    return undefined
+    await cache.setAsync(room, JSON.stringify(data))
+
+    return data
 }
 
-async function joinARoomAsync(room, user, password) {
+async function joinARoomAsync(room, user) {
     const item = await cache.getAsync(room)
-    const data = JSON.parse(item)
+
+    let data
+    if (item === null) {
+        data = await createARoomAsync(room, user)
+    } else {
+        data = JSON.parse(item)
+    }
 
     data.users[user] = { selection: 'none' }
 
@@ -46,9 +47,9 @@ async function getRoomInfoAsync() {
 
 nextApp.prepare().then(async () => {
     io.sockets.on('connection', async (socket) => {
-        socket.on('create', async function ({ room, user, password }) {
+        socket.on('create', async function ({ room, user }) {
             try {
-                const data = await createARoomAsync(room, user, password)
+                const data = await createARoomAsync(room, user)
 
                 if (data) {
                     socket.join(room)
@@ -62,27 +63,28 @@ nextApp.prepare().then(async () => {
             }
         })
 
-        socket.on('room', async function ({ room = 'room', user, password }) {
+        socket.on('room', async function ({ room = 'room', user }) {
             socket.join(room)
-
-            const cards = await joinARoomAsync(room, user, password)
+            const cards = await joinARoomAsync(room, user)
 
             io.sockets.in(room).emit('message', `Welcome ${user} to ${room}`)
             io.sockets.in(room).emit('update', cards)
         })
 
-        socket.on('selection', ({ room, user, password, selection }) => {
-            // const cards = getARoom(room)
-            // if (selection) {
-            //     cards.users[user] = { selection }
-            // } else {
-            //     cards.users[user] = { selection: 'none' }
-            // }
-            // console.log(room, user, selection, cards)
-            // if (selection) {
-            //     io.sockets.in(room).emit('message', `User ${user} selected ${selection.caption}`)
-            // }
-            // io.sockets.in(room).emit('update', cards)
+        socket.on('selection', async ({ room, user, selection }) => {
+            socket.join(room)
+            const cards = await joinARoomAsync(room, user)
+
+            if (selection) {
+                cards.users[user] = { selection }
+            } else {
+                cards.users[user] = { selection: 'none' }
+            }
+
+            if (selection) {
+                io.sockets.in(room).emit('message', `User ${user} selected ${selection}`)
+            }
+            io.sockets.in(room).emit('update', cards)
         })
 
         socket.on('reveal', ({ room, user }) => {
@@ -90,24 +92,20 @@ nextApp.prepare().then(async () => {
             io.sockets.in(room).emit('reveal')
         })
 
-        socket.on('clear', ({ room, user }) => {
-            // const cards = getARoom(room)
+        socket.on('clear', async ({ room, user }) => {
+            socket.join(room)
+            const cards = await joinARoomAsync(room, user)
 
-            // for (var property in cards.users) {
-            //     if (cards.users.hasOwnProperty(property)) {
-            //         cards.users[property] = { selection: 'none' }
-            //     }
-            // }
+            for (var property in cards.users) {
+                if (cards.users.hasOwnProperty(property)) {
+                    cards.users[property] = { selection: 'none' }
+                }
+            }
 
             io.sockets.in(room).emit('message', `User ${user} cleared ${room}`)
             io.sockets.in(room).emit('update', cards)
         })
     })
-
-    app.get('/room', (req, res) => {
-        // test the username and password
-        res.write("ok")
-    }) 
 
     app.get('*', (req, res) => {
         return nextHandler(req, res)

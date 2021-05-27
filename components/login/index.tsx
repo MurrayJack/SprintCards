@@ -1,18 +1,18 @@
-import React, { useState } from 'react'
-import { Menu } from './menu'
+import React from 'react'
 import { NewRoom } from './form'
+import { useRouter } from 'next/router'
 
-export const Login = () => {
-    const [page, setPage] = useState<'New' | 'Existing'>('New')
+interface ILogin {
+    roomName?: string
+}
 
+export const Login = ({ roomName }: ILogin) => {
     return (
         <>
             <article>
-                <h2>Connect to Sprint Cards</h2>
+                <h2>Welcome to Sprint Cards</h2>
                 <section>
-                    <Menu selected={page} onClick={setPage} />
-
-                    <NewRoom type={page} />
+                    <NewRoom roomName={roomName} />
                 </section>
             </article>
 
@@ -49,7 +49,6 @@ export const Login = () => {
 
                 section {
                     display: grid;
-                    grid-template-columns: auto 400px;
                     gap: 32px;
                 }
             `}</style>
