@@ -4,11 +4,12 @@ import { Layout } from '../components/Layout'
 import { Login } from '../components/login'
 import { ConnectionProvider, useConnection } from '../context/ConnectionContext'
 import { ToastProvider } from 'react-toast-notifications'
+import { hri } from 'human-readable-ids'
 
 const Home = () => {
     return (
         <ToastProvider>
-            <ConnectionProvider>
+            <ConnectionProvider room={hri.random()} roomFromUrl={false}>
                 <Application />
             </ConnectionProvider>
         </ToastProvider>

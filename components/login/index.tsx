@@ -1,18 +1,13 @@
 import React from 'react'
 import { NewRoom } from './form'
-import { useRouter } from 'next/router'
 
-interface ILogin {
-    roomName?: string
-}
-
-export const Login = ({ roomName }: ILogin) => {
+export const Login = () => {
     return (
         <>
             <article>
                 <h2>Welcome to Sprint Cards</h2>
                 <section>
-                    <NewRoom roomName={roomName} />
+                    <NewRoom />
                 </section>
             </article>
 
