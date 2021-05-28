@@ -22,9 +22,7 @@ export const Header = () => {
 
                 <HeaderButton icon={AiOutlineUser} title={user}>
                     <div>
-                        <ul>
-                            <li>Name</li>
-                        </ul>
+                        <p>{user}</p>
                     </div>
                 </HeaderButton>
 

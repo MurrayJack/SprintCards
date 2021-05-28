@@ -10,7 +10,7 @@ export default () => {
                 <ul>
                     {results &&
                         Object.keys(results.users).map((e) => (
-                            <li>
+                            <li key={e}>
                                 <span>
                                     {e} {user === e ? ` (me)` : ''}
                                 </span>
