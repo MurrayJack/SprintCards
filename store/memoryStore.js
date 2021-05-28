@@ -17,10 +17,12 @@ class memoryStore {
 class Room {
     room = ''
     users = {}
+    revealed = false
 
     constructor(roomName) {
         this.room = roomName
         this.users = {}
+        this.revealed = false
     }
 
     /**
@@ -42,7 +44,13 @@ class Room {
         return this
     }
 
+    async reveal() {
+        this.revealed = true
+        return this
+    }
+
     async clearAllSelections() {
+        this.revealed = false
         Object.keys(this.users).map((e) => {
             this.users[e] = { selection: 'none' }
         })

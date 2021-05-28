@@ -20,8 +20,10 @@ nextApp.prepare().then(async () => {
             menStore
                 .ensureRoom(room)
                 .then((roomData) => roomData.ensureUser(user))
-                .then((roomData) => io.sockets.in(room).emit('update', roomData))
-                .finally(() => io.sockets.in(room).emit('message', `Welcome ${user} to ${room}`))
+                .then((roomData) => {
+                    io.sockets.in(room).emit('update', roomData)
+                    io.sockets.in(room).emit('message', `Welcome ${user} to ${room}`)
+                })
         })
 
         socket.on('selection', async ({ room, user, selection }) => {
@@ -30,13 +32,20 @@ nextApp.prepare().then(async () => {
             menStore
                 .ensureRoom(room)
                 .then((roomData) => roomData.select(user, selection))
-                .then((roomData) => io.sockets.in(room).emit('update', roomData))
-                .finally(() => io.sockets.in(room).emit('message', `User ${user} selected ${selection}`))
+                .then((roomData) => {
+                    io.sockets.in(room).emit('update', roomData)
+                    io.sockets.in(room).emit('message', `User ${user} selected ${selection}`)
+                })
         })
 
         socket.on('reveal', ({ room, user }) => {
-            io.sockets.in(room).emit('message', `User ${user} revealed ${room}`)
-            io.sockets.in(room).emit('reveal')
+            menStore
+                .ensureRoom(room)
+                .then((roomData) => roomData.reveal())
+                .then((roomData) => {
+                    io.sockets.in(room).emit('update', roomData)
+                    io.sockets.in(room).emit('message', `User ${user} revealed ${room}`)
+                })
         })
 
         socket.on('kick', async ({ room, name }) => {
@@ -45,8 +54,10 @@ nextApp.prepare().then(async () => {
             menStore
                 .ensureRoom(room)
                 .then((roomData) => roomData.deleteUser(name))
-                .then((roomData) => io.sockets.in(room).emit('kick', { name, room: roomData }))
-                .finally(() => io.sockets.in(room).emit('message', `User ${name} kicked`))
+                .then((roomData) => {
+                    io.sockets.in(room).emit('kick', { name, room: roomData })
+                    io.sockets.in(room).emit('message', `User ${name} kicked`)
+                })
         })
 
         socket.on('clear', async ({ room, user }) => {
@@ -55,8 +66,10 @@ nextApp.prepare().then(async () => {
             menStore
                 .ensureRoom(room)
                 .then((roomData) => roomData.clearAllSelections())
-                .then((roomData) => io.sockets.in(room).emit('clear', roomData))
-                .finally(() => io.sockets.in(room).emit('message', `User ${user} cleared ${room}`))
+                .then((roomData) => {
+                    io.sockets.in(room).emit('update', roomData)
+                    io.sockets.in(room).emit('message', `User ${user} cleared ${room}`)
+                })
         })
     })
 

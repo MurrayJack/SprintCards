@@ -16,7 +16,7 @@ export const Header = () => {
 
                 <HeaderButton icon={AiOutlineShareAlt} title="Share">
                     <>
-                        <input value={window.location.href} />
+                        <input value={`${window.location.host}/${room}`} />
                     </>
                 </HeaderButton>
 

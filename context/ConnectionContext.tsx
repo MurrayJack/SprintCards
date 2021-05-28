@@ -1,5 +1,6 @@
 import { createContext, FC, useContext, useEffect, useState } from 'react'
 import io from 'socket.io-client'
+import { useToasts } from 'react-toast-notifications'
 
 export interface IContext {
     create?: (room: string, name: string) => void
@@ -9,12 +10,12 @@ export interface IContext {
     select?: (card: string) => void
     kick?: (name) => void
     isConnected: boolean
-    isRevealed?: boolean
     selection?: string
     user?: string
     room?: string
     roomFromUrl?: boolean
     results?: {
+        revealed: boolean
         room: string
         users: { [key: string]: { selection: string } }
     }
@@ -30,8 +31,8 @@ export const ConnectionProvider: FC<{ room: string, roomFromUrl: boolean }> = ({
     const [room, setRoom] = useState(initialRoom)
     const [user, setUser] = useState('')
     const [selection, setCurrentSelection] = useState<string>()
-    const [isRevealed, setRevealed] = useState<boolean>()
     const [results, setResults] = useState()
+    const { addToast } = useToasts()
 
     const handleCreate = (room: string, user: string) => {
         socket.emit('create', { room, user })
@@ -48,13 +49,11 @@ export const ConnectionProvider: FC<{ room: string, roomFromUrl: boolean }> = ({
     }
 
     const handleReveal = () => {
-        setRevealed(true)
         socket.emit('reveal', { room, user })
     }
 
     const handleClear = () => {
         setCurrentSelection(undefined)
-        setRevealed(false)
         socket.emit('clear', { room, user })
     }
 
@@ -76,6 +75,8 @@ export const ConnectionProvider: FC<{ room: string, roomFromUrl: boolean }> = ({
         })
 
         socket.on('message', function (data) {
+            debugger
+            addToast(data)
             console.log(data)
         })
     }, [])
@@ -90,21 +91,10 @@ export const ConnectionProvider: FC<{ room: string, roomFromUrl: boolean }> = ({
                 setResults(room)
             })
 
-            socket.on('clear', function (room) {
-                setResults(room)
-                setRevealed(false)
-            })
-
             socket.on('kick', function ({ name, room }) {
                 setResults(room)
                 if (name === user)  {
                     setConnected(false)
-                }
-            })
-
-            socket.on('reveal', function () {
-                if (!isRevealed) {
-                    setRevealed(true)
                 }
             })
         }
@@ -116,12 +106,6 @@ export const ConnectionProvider: FC<{ room: string, roomFromUrl: boolean }> = ({
         }
     }, [selection])
 
-    useEffect(() => {
-        if (isRevealed) {
-            socket.emit('reveal', { room, user })
-        }
-    }, [isRevealed])
-
     return (
         <ConnectionContext.Provider
             value={{
@@ -132,7 +116,6 @@ export const ConnectionProvider: FC<{ room: string, roomFromUrl: boolean }> = ({
                 reveal: handleReveal,
                 clear: handleClear,
                 kick: handleKick,
-                isRevealed,
                 isConnected,
                 results,
                 user,

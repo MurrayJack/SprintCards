@@ -1,16 +1,9 @@
 import { useConnection } from '../context/ConnectionContext'
-import { ICard } from './cards'
 import SprintCard from './SprintCard'
 import cards from './cards'
 
-export interface ICardSelectionProps {
-    answers: ICard[]
-    revealed: boolean
-    onCurrentClick: () => void
-}
-
 export const CardSelection = () => {
-    const { results, isRevealed, selection } = useConnection()
+    const { results } = useConnection()
 
     const users = Object.keys(results?.users || {})
 
@@ -22,7 +15,7 @@ export const CardSelection = () => {
                         <li key={e}>
                             <SprintCard
                                 card={cards.find(c => c.caption === results.users[e].selection)}
-                                hidden={!isRevealed && Boolean(results.users[e].selection !== "none")}
+                                hidden={!results.revealed && Boolean(results.users[e].selection !== "none")}
                             />
                             <p>{e}</p>
                         </li>
