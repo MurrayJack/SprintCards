@@ -1,5 +1,5 @@
 import { AiOutlineCoffee } from 'react-icons/ai'
-import { MdAccessibility, MdDirectionsBike, MdAirplanemodeActive } from 'react-icons/md'
+import { MdAccessibility, MdAirplanemodeActive } from 'react-icons/md'
 import { GiDutchBike, GiScooter, GiCityCar, GiFireworkRocket } from 'react-icons/gi'
 import { IconType } from 'react-icons'
 
