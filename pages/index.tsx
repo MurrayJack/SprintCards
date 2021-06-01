@@ -1,6 +1,6 @@
 import React from 'react'
-import { App } from '../components/app'
-import { Layout } from '../components/Layout'
+import { App } from '../components/application/app'
+import { Layout } from '../components/layouts/layout'
 import { Login } from '../components/login'
 import { ConnectionProvider, useConnection } from '../context/ConnectionContext'
 import { ToastProvider } from 'react-toast-notifications'

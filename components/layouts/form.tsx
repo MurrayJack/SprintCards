@@ -8,7 +8,7 @@ export const Form: FC<FormHTMLAttributes<HTMLFormElement>> = ({ children, ...pro
             <style jsx>{`
                 form {
                     display: grid;
-                    gap: 48px;
+                    gap: 40px;
                     min-width: 400px;
                 }
             `}</style>

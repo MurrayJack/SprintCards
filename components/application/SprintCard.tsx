@@ -1,4 +1,4 @@
-import cards, { ICard } from './cards'
+import cards, { ICard } from '../cardSets/cards'
 
 export interface ISprintCard {
     card?: ICard

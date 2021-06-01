@@ -1,4 +1,4 @@
-import { useConnection } from '../context/ConnectionContext'
+import { useConnection } from '../../context/ConnectionContext'
 import { AiOutlineHome, AiOutlineShareAlt, AiOutlineUser } from 'react-icons/ai'
 import { GiCardPickup } from 'react-icons/gi'
 import { FC } from 'react'

@@ -1,5 +1,5 @@
 import SprintCard from './SprintCard'
-import cards, { ICard } from './cards'
+import cards from './cardSets/cards'
 import { useConnection } from '../context/ConnectionContext'
 
 export default () => {

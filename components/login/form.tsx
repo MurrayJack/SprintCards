@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { FiUser, FiHome } from 'react-icons/fi'
 import { Input } from '../controls/inputControl'
 import { useConnection } from '../../context/ConnectionContext'
+import { Button } from '../controls/button'
+import { Form } from '../layouts/form'
 
 export const NewRoom = () => {
     const { connect, room, roomFromUrl } = useConnection()
@@ -28,7 +30,7 @@ export const NewRoom = () => {
 
     return (
         <>
-            <form onSubmit={handleOnSubmit}>
+            <Form onSubmit={handleOnSubmit}>
                 <Input
                     autoFocus
                     icon={FiUser}
@@ -51,14 +53,8 @@ export const NewRoom = () => {
 
                 {roomFromUrl && <p>Joining Room: {room}</p>}
 
-                <button type="submit">Enter</button>
-            </form>
-            <style jsx>{`
-                form {
-                    display: grid;
-                    gap: 24px;
-                }
-            `}</style>
+                <Button>Enter</Button>
+            </Form>
         </>
     )
 }

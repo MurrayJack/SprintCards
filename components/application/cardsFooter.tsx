@@ -1,4 +1,6 @@
-import { useConnection } from '../context/ConnectionContext'
+import React from 'react'
+import { useConnection } from '../../context/ConnectionContext'
+import { Button } from '../controls/button'
 
 export const CardsFooter = () => {
     const { clear, reveal } = useConnection()
@@ -6,8 +8,8 @@ export const CardsFooter = () => {
     return (
         <>
             <footer>
-                <button onClick={reveal}>Reveal</button>
-                <button onClick={clear}>Clear</button>
+                <Button onClick={reveal}>Reveal</Button>
+                <Button onClick={clear}>Clear</Button>
             </footer>
 
             <style jsx>{`
@@ -16,14 +18,6 @@ export const CardsFooter = () => {
                     grid-template-columns: 1fr 1fr;
                     grid-gap: 20px;
                     padding: 20px;
-                }
-
-                button {
-                    border-radius: 0;
-                }
-
-                button:hover {
-                    background-color: var(--color-accent-color);
                 }
             `}</style>
         </>

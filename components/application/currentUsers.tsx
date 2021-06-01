@@ -1,4 +1,4 @@
-import { useConnection } from '../context/ConnectionContext'
+import { useConnection } from '../../context/ConnectionContext'
 import { MdDelete } from 'react-icons/md'
 
 export default () => {
