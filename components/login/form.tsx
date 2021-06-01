@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { FiUser, FiHome } from 'react-icons/fi'
 import { Input } from '../controls/inputControl'
-import { useConnection } from '../../context/ConnectionContext'
+import { useConnection } from '../../context/connectionContext'
 import { Button } from '../controls/button'
 import { Form } from '../layouts/form'
 

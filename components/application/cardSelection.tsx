@@ -1,5 +1,5 @@
-import { useConnection } from '../../context/ConnectionContext'
-import SprintCard from './SprintCard'
+import { useConnection } from '../../context/connectionContext'
+import SprintCard from './sprintCard'
 import cards from '../cardSets/cards'
 
 export const CardSelection = () => {

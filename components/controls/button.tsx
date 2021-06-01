@@ -16,14 +16,11 @@ export const Button: FC<ButtonHTMLAttributes<HTMLButtonElement>> = ({ children, 
                     border-radius: 3px;
                     cursor: pointer;
                     text-transform: uppercase;
+                    transition: all ease-in-out 0.2s;
                 }
 
-                button[type='submit'] {
+                button:hover {
                     background: var(--color-accent-color);
-                }
-
-                button[type='submit']:hover {
-                    background: var(--button-bg-color);
                 }
             `}</style>
         </>

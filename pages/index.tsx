@@ -2,7 +2,7 @@ import React from 'react'
 import { App } from '../components/application/app'
 import { Layout } from '../components/layouts/layout'
 import { Login } from '../components/login'
-import { ConnectionProvider, useConnection } from '../context/ConnectionContext'
+import { ConnectionProvider, useConnection } from '../context/connectionContext'
 import { ToastProvider } from 'react-toast-notifications'
 import { hri } from 'human-readable-ids'
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useConnection } from '../../context/ConnectionContext'
+import { useConnection } from '../../context/connectionContext'
 import { Button } from '../controls/button'
 
 export const CardsFooter = () => {

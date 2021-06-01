@@ -1,5 +1,5 @@
 import React from 'react'
-import { CreateProvider } from '../../context/CreateContext'
+import { CreateProvider } from '../../context/createContext'
 import { Layout } from '../../components/layouts/layout'
 import { CreateRoom } from '../../components/create/createRoom'
 

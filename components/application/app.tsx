@@ -1,8 +1,8 @@
 import React from 'react'
-import { useConnection } from '../../context/ConnectionContext'
+import { useConnection } from '../../context/connectionContext'
 import { CardSelection } from './cardSelection'
 import { CardsFooter } from './cardsFooter'
-import SprintCardOptions from '../SprintCardOptions'
+import SprintCardOptions from './sprintCardOptions'
 import { Header } from './header'
 
 export const App = () => {
