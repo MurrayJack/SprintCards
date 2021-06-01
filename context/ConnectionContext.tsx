@@ -1,9 +1,10 @@
 import { createContext, FC, useContext, useEffect, useState } from 'react'
 import io from 'socket.io-client'
 import { useToasts } from 'react-toast-notifications'
+import { useRouter } from 'next/router'
 
 export interface IContext {
-    create?: (room: string, name: string) => void
+    create?: (room: string, password: string, cardSet) => void
     connect: (room: string, name: string) => void
     reveal?: () => void
     clear?: () => void
@@ -26,16 +27,21 @@ export const ConnectionContext = createContext<IContext>({
     isConnected: false,
 })
 
-export const ConnectionProvider: FC<{ room: string, roomFromUrl: boolean }> = ({ children, room: initialRoom, roomFromUrl }) => {
+export const ConnectionProvider: FC<{ room?: string; roomFromUrl?: boolean }> = ({
+    children,
+    room: initialRoom,
+    roomFromUrl,
+}) => {
     const [isConnected, setConnected] = useState(false)
     const [room, setRoom] = useState(initialRoom)
     const [user, setUser] = useState('')
     const [selection, setCurrentSelection] = useState<string>()
     const [results, setResults] = useState()
     const { addToast } = useToasts()
+    const router = useRouter()
 
-    const handleCreate = (room: string, user: string) => {
-        socket.emit('create', { room, user })
+    const handleCreate = (room: string, password: string, cardSet: string) => {
+        socket.emit('create', { room, password, cardSet })
     }
 
     const handleSelect = (card: string) => {
@@ -79,6 +85,15 @@ export const ConnectionProvider: FC<{ room: string, roomFromUrl: boolean }> = ({
             addToast(data)
             console.log(data)
         })
+
+        socket.on('create', function ({ name, id }) {
+            debugger
+            router.push(`/${name}`)
+        })
+
+        socket.on('create_failed', function (data) {
+            debugger
+        })
     }, [])
 
     useEffect(() => {
@@ -93,7 +108,7 @@ export const ConnectionProvider: FC<{ room: string, roomFromUrl: boolean }> = ({
 
             socket.on('kick', function ({ name, room }) {
                 setResults(room)
-                if (name === user)  {
+                if (name === user) {
                     setConnected(false)
                 }
             })
@@ -120,7 +135,7 @@ export const ConnectionProvider: FC<{ room: string, roomFromUrl: boolean }> = ({
                 results,
                 user,
                 room,
-                roomFromUrl
+                roomFromUrl,
             }}
         >
             {children}

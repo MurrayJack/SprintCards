@@ -1,20 +1,22 @@
-import { FC, InputHTMLAttributes } from 'react'
+import { FC, SelectHTMLAttributes } from 'react'
 import { IconType } from 'react-icons'
 
-export const Input: FC<InputHTMLAttributes<HTMLInputElement> & { icon: IconType; label: string }> = ({
+export const Select: FC<SelectHTMLAttributes<HTMLSelectElement> & { icon: IconType; label: string }> = ({
+    children,
     icon: Icon,
+    label,
     ...props
 }) => {
     return (
         <>
             <label>
-                <span>{props.label}: {props.required ? "(required)" : ""}</span>
+                <span>{label}:</span>
 
                 <div>
                     <Icon />
                 </div>
 
-                <input {...props} />
+                <select {...props}>{children}</select>
             </label>
             <style jsx>{`
                 label {
@@ -31,7 +33,7 @@ export const Input: FC<InputHTMLAttributes<HTMLInputElement> & { icon: IconType;
                     pointer-events: none;
                 }
 
-                input {
+                select {
                     padding: var(--gaps-large);
                     font-size: 1em;
                     border-radius: 4px;

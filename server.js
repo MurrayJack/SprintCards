@@ -12,7 +12,21 @@ const menStore = new memoryStore()
 
 nextApp.prepare().then(async () => {
     io.sockets.on('connection', async (socket) => {
-        socket.on('create', async function ({ room, user }) {})
+        /**
+         * Create a room for you to use
+         */
+        socket.on('create', async function ({ room, password, cardSet }) {
+            menStore
+                .createRoom(room, password, cardSet)
+                .then((e) => {
+                    socket.emit('create', { name: e.room, id: e.id })
+                })
+                .catch((e) => {
+                    debugger
+
+                    socket.emit('create_failed', 'room exists')
+                })
+        })
 
         socket.on('room', async function ({ room = 'room', user }) {
             socket.join(room)
@@ -72,6 +86,8 @@ nextApp.prepare().then(async () => {
                 })
         })
     })
+
+    app.get(``, () => {})
 
     app.get('*', (req, res) => {
         return nextHandler(req, res)

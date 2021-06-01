@@ -1,8 +1,27 @@
+const uuid = require('uuid');
+
 class memoryStore {
     store = {}
 
     constructor() {
         this.store = {}
+    }
+
+    async createRoom(roomName, password, cardSet) {
+        let room = this.store[roomName]
+
+        // there is already a room named that
+        if (room) {
+            throw Error('nope!')
+        }
+
+        this.store[roomName] = new Room(roomName)
+        room = this.store[roomName]
+
+        room.password = password
+        room.cardSet = cardSet
+
+        return room
     }
 
     async ensureRoom(roomName) {
@@ -18,6 +37,9 @@ class Room {
     room = ''
     users = {}
     revealed = false
+    password = ''
+    cardSet = ''
+    id = uuid.v4()
 
     constructor(roomName) {
         this.room = roomName

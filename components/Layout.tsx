@@ -66,25 +66,6 @@ export const Layout: FC = ({ children }) => (
                 color: var(--main-color);
             }
 
-            button {
-                background: var(--button-bg-color);
-                color: var(--button-color);
-                border: 0;
-                font-size: var(--font-normal);
-                padding: var(--gaps-large) var(--gaps-xlarge);
-                border-radius: 3px;
-                cursor: pointer;
-                text-transform: uppercase;
-            }
-
-            button[type='submit'] {
-                background: var(--color-accent-color);
-            }
-
-            button[type='submit']:hover {
-                background: var(--button-bg-color);
-            }
-
             h1,
             h2,
             h3,
@@ -98,15 +79,6 @@ export const Layout: FC = ({ children }) => (
 
             h1 {
                 font-size: var(--font-xlarge);
-            }
-
-            input {
-                padding: var(--gaps-large);
-                font-size: 1em;
-                border-radius: 4px;
-                border: 1px solid var(--color-accent-color);
-                background: var(--main-bg-color);
-                color: var(--main-color);
             }
         `}</style>
     </>
