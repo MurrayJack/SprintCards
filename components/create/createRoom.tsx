@@ -14,11 +14,12 @@ export const CreateRoom = () => {
     const { create } = useCreate()
     const [roomName, setRoomName] = useState(hri.random())
     const [password, setPassword] = useState('')
+    const [cardSet, setCardSet] = useState('')
 
     const handleFormSubmit = (e) => {
         e.preventDefault()
 
-        create(roomName, '', '')
+        create(roomName, password, cardSet)
     }
 
     return (
@@ -43,7 +44,12 @@ export const CreateRoom = () => {
                     type="password"
                 />
 
-                <Select icon={CgCardHearts} label="Card Set">
+                <Select
+                    value={cardSet}
+                    onChange={(e) => setCardSet(e.target.value)}
+                    icon={CgCardHearts}
+                    label="Card Set"
+                >
                     {cardSets.map((e) => (
                         <optgroup label={e.name}>
                             {e.cardSets.map((e) => (

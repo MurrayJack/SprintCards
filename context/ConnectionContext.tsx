@@ -1,141 +1,97 @@
 import { createContext, FC, useContext, useEffect, useState } from 'react'
 import io from 'socket.io-client'
-import { useToasts } from 'react-toast-notifications'
-import { useRouter } from 'next/router'
 
 export interface IContext {
-    create?: (room: string, password: string, cardSet) => void
-    connect: (room: string, name: string) => void
     reveal?: () => void
     clear?: () => void
     select?: (card: string) => void
-    kick?: (name) => void
-    isConnected: boolean
+    kick?: (name: string) => void
+
+    userName?: string
+    roomName?: string
     selection?: string
-    user?: string
-    room?: string
-    roomFromUrl?: boolean
+
     results?: {
         revealed: boolean
         room: string
+        password: string
+        cardSet: string
         users: { [key: string]: { selection: string } }
     }
 }
 
-export const ConnectionContext = createContext<IContext>({
-    connect: () => {},
-    isConnected: false,
-})
+export const ConnectionContext = createContext<IContext>({})
 
-export const ConnectionProvider: FC<{ room?: string; roomFromUrl?: boolean }> = ({
-    children,
-    room: initialRoom,
-    roomFromUrl,
-}) => {
-    const [isConnected, setConnected] = useState(false)
-    const [room, setRoom] = useState(initialRoom)
-    const [user, setUser] = useState('')
+export const ConnectionProvider: FC<{ roomName: string; userName: string }> = ({ children, roomName, userName }) => {
+    // const [isConnected, setConnected] = useState(false)
+    // const [user, setUser] = useState('')
     const [selection, setCurrentSelection] = useState<string>()
     const [results, setResults] = useState()
-    const { addToast } = useToasts()
-    const router = useRouter()
 
-    const handleCreate = (room: string, password: string, cardSet: string) => {
-        socket.emit('create', { room, password, cardSet })
+    // const handleCreate = (room: string, password: string, cardSet: string) => {
+    //     socket.emit('create', { room, password, cardSet })
+    // }
+
+    const handleSelect = (selection: string) => {
+        setCurrentSelection(selection)
+        socket.emit('selection', { roomName, userName, selection })
     }
 
-    const handleSelect = (card: string) => {
-        setCurrentSelection(card)
-    }
-
-    const handleConnect = (key: string, name: string) => {
-        setConnected(true)
-        setUser(name)
-        setRoom(key)
-    }
+    // // const handleConnect = (room: string, user: string) => {
+    // //     setUser(user);
+    // //     socket.emit('clear', { room, user })
+    // // }
 
     const handleReveal = () => {
-        socket.emit('reveal', { room, user })
+        socket.emit('reveal', { roomName })
     }
 
     const handleClear = () => {
         setCurrentSelection(undefined)
-        socket.emit('clear', { room, user })
+        socket.emit('clear', { roomName })
     }
 
     const handleKick = (name) => {
-        socket.emit('kick', { room, name })
+        socket.emit('kick', { roomName, name })
     }
 
     let socket = io()
 
     useEffect(() => {
-        socket.on('error', function (data) {
-            console.log(data)
+        //     socket.on('kick', function ({ name, room }) {
+        //         setResults(room)
+        //         if (name === user) {
+        //             setConnected(false)
+        //         }
+        //     })
+        socket.on('update', function (room) {
+            // /         setConnected(true)
+            setResults(room)
         })
 
-        socket.on('inRoom', function ({ room, user }) {
-            setRoom(room)
-            setUser(user)
-            setConnected(true)
-        })
-
-        socket.on('message', function (data) {
-            debugger
-            addToast(data)
-            console.log(data)
-        })
-
-        socket.on('create', function ({ name, id }) {
-            debugger
-            router.push(`/${name}`)
-        })
-
-        socket.on('create_failed', function (data) {
-            debugger
-        })
+        socket.emit('enter', { roomName, userName })
     }, [])
 
-    useEffect(() => {
-        if (isConnected) {
-            socket.on('connect', function () {
-                socket.emit('room', { room, user })
-            })
-
-            socket.on('update', function (room) {
-                setResults(room)
-            })
-
-            socket.on('kick', function ({ name, room }) {
-                setResults(room)
-                if (name === user) {
-                    setConnected(false)
-                }
-            })
-        }
-    }, [isConnected, user, room])
-
-    useEffect(() => {
-        if (selection) {
-            socket.emit('selection', { room, user, selection })
-        }
-    }, [selection])
+    // useEffect(() => {
+    //     if (selection) {
+    //         socket.emit('selection', { room, user, selection })
+    //     }
+    // }, [selection])
 
     return (
         <ConnectionContext.Provider
             value={{
-                selection,
-                create: handleCreate,
                 select: handleSelect,
-                connect: handleConnect,
                 reveal: handleReveal,
                 clear: handleClear,
                 kick: handleKick,
-                isConnected,
+                // isConnected,
+                selection,
                 results,
-                user,
-                room,
-                roomFromUrl,
+                userName,
+                roomName
+                // room,
+                // roomFromUrl,
             }}
         >
             {children}

@@ -18,76 +18,55 @@ nextApp.prepare().then(async () => {
         socket.on('create', async function ({ room, password, cardSet }) {
             menStore
                 .createRoom(room, password, cardSet)
-                .then((e) => {
-                    socket.emit('create', { name: e.room, id: e.id })
-                })
-                .catch((e) => {
-                    debugger
-
-                    socket.emit('create_failed', 'room exists')
-                })
+                .then((e) => socket.emit('create', { name: e.room, id: e.id }))
+                .catch((e) => socket.emit('create_failed', 'room exists'))
         })
 
-        socket.on('room', async function ({ room = 'room', user }) {
-            socket.join(room)
+        socket.on('enter', async function ({ roomName, userName }) {
+            socket.join(roomName)
 
             menStore
-                .ensureRoom(room)
-                .then((roomData) => roomData.ensureUser(user))
-                .then((roomData) => {
-                    io.sockets.in(room).emit('update', roomData)
-                    io.sockets.in(room).emit('message', `Welcome ${user} to ${room}`)
-                })
+                .ensureRoom(roomName)
+                .then((roomData) => roomData.ensureUser(userName))
+                .then((roomData) => io.sockets.in(roomName).emit('update', roomData))
         })
 
-        socket.on('selection', async ({ room, user, selection }) => {
-            socket.join(room)
+        socket.on('selection', async ({ roomName, userName, selection }) => {
+            socket.join(roomName)
 
             menStore
-                .ensureRoom(room)
-                .then((roomData) => roomData.select(user, selection))
-                .then((roomData) => {
-                    io.sockets.in(room).emit('update', roomData)
-                    io.sockets.in(room).emit('message', `User ${user} selected ${selection}`)
-                })
+                .ensureRoom(roomName)
+                .then((roomData) => roomData.select(userName, selection))
+                .then((roomData) => io.sockets.in(roomName).emit('update', roomData))
         })
 
-        socket.on('reveal', ({ room, user }) => {
+        socket.on('reveal', ({ roomName }) => {
+            socket.join(roomName)
+
             menStore
-                .ensureRoom(room)
+                .ensureRoom(roomName)
                 .then((roomData) => roomData.reveal())
-                .then((roomData) => {
-                    io.sockets.in(room).emit('update', roomData)
-                    io.sockets.in(room).emit('message', `User ${user} revealed ${room}`)
-                })
+                .then((roomData) => io.sockets.in(roomName).emit('update', roomData))
         })
 
-        socket.on('kick', async ({ room, name }) => {
-            socket.join(room)
+        socket.on('kick', async ({ roomName, name }) => {
+            socket.join(roomName)
 
             menStore
-                .ensureRoom(room)
+                .ensureRoom(roomName)
                 .then((roomData) => roomData.deleteUser(name))
-                .then((roomData) => {
-                    io.sockets.in(room).emit('kick', { name, room: roomData })
-                    io.sockets.in(room).emit('message', `User ${name} kicked`)
-                })
+                .then((roomData) => io.sockets.in(roomName).emit('kick', { name, room: roomData }))
         })
 
-        socket.on('clear', async ({ room, user }) => {
-            socket.join(room)
+        socket.on('clear', async ({ roomName }) => {
+            socket.join(roomName)
 
             menStore
-                .ensureRoom(room)
+                .ensureRoom(roomName)
                 .then((roomData) => roomData.clearAllSelections())
-                .then((roomData) => {
-                    io.sockets.in(room).emit('update', roomData)
-                    io.sockets.in(room).emit('message', `User ${user} cleared ${room}`)
-                })
+                .then((roomData) => io.sockets.in(roomName).emit('update', roomData))
         })
     })
-
-    app.get(``, () => {})
 
     app.get('*', (req, res) => {
         return nextHandler(req, res)

@@ -2,7 +2,7 @@ import { useConnection } from '../../context/connectionContext'
 import { MdDelete } from 'react-icons/md'
 
 export default () => {
-    const { results, kick, user } = useConnection()
+    const { results, kick, userName } = useConnection()
 
     return (
         <>
@@ -12,7 +12,7 @@ export default () => {
                         Object.keys(results.users).map((e) => (
                             <li key={e}>
                                 <span>
-                                    {e} {user === e ? ` (me)` : ''}
+                                    {e} {userName === e ? ` (me)` : ''}
                                 </span>
                                 <button type="button" onClick={() => kick(e)}>
                                     <MdDelete />

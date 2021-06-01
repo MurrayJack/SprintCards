@@ -6,7 +6,7 @@ import { IconType } from 'react-icons'
 import CurrentUsers from './currentUsers'
 
 export const Header = () => {
-    const { user, room } = useConnection()
+    const { userName, roomName } = useConnection()
 
     return (
         <>
@@ -16,17 +16,17 @@ export const Header = () => {
 
                 <HeaderButton icon={AiOutlineShareAlt} title="Share">
                     <>
-                        <input value={`${window.location.host}/${room}`} />
+                        <input value={`${window.location.host}/${roomName}`} />
                     </>
                 </HeaderButton>
 
-                <HeaderButton icon={AiOutlineUser} title={user}>
+                <HeaderButton icon={AiOutlineUser} title={userName}>
                     <div>
-                        <p>{user}</p>
+                        <p>{userName}</p>
                     </div>
                 </HeaderButton>
 
-                <HeaderButton icon={AiOutlineHome} title={room}>
+                <HeaderButton icon={AiOutlineHome} title={roomName}>
                     <CurrentUsers />
                 </HeaderButton>
             </header>
@@ -40,7 +40,7 @@ export const Header = () => {
                 }
 
                 input {
-                    width: 300px
+                    width: 300px;
                 }
 
                 h1 {
@@ -82,6 +82,7 @@ const HeaderButton: FC<IHeaderButtonProps> = ({ title, children, icon: Icon }) =
                     text-transform: unset;
                     padding: 0;
                     margin: 0 8px;
+                    color: white;
                 }
 
                 button:hover {
@@ -97,7 +98,7 @@ const HeaderButton: FC<IHeaderButtonProps> = ({ title, children, icon: Icon }) =
                 }
 
                 div:focus-within section {
-                    display: block
+                    display: block;
                 }
 
                 section {

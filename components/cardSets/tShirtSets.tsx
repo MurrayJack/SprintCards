@@ -1,28 +1,54 @@
-import { MdAccessibility, MdAirplanemodeActive } from 'react-icons/md'
-import { GiDutchBike, GiScooter, GiCityCar, GiFireworkRocket } from 'react-icons/gi'
-import { AiOutlineCoffee } from 'react-icons/ai'
+import { FaTshirt } from 'react-icons/fa'
+import { GiTShirt } from 'react-icons/gi'
+import { RiTShirt2Fill, RiTShirt2Line, RiTShirtLine } from 'react-icons/ri'
 
 export default {
     simple: [
         {
             caption: 'S',
-            icon: MdAccessibility,
+            icon: FaTshirt,
         },
         {
             caption: 'M',
-            icon: GiDutchBike,
+            icon: GiTShirt,
         },
         {
             caption: 'L',
-            icon: GiScooter,
+            icon: RiTShirt2Fill,
         },
         {
             caption: 'XL',
-            icon: GiCityCar,
+            icon: RiTShirt2Line,
         },
         {
             caption: '?',
-            icon: MdAirplanemodeActive,
+            icon: RiTShirtLine,
+        },
+    ],
+    medium: [
+        {
+            caption: 'XS',
+            icon: FaTshirt,
+        },
+        {
+            caption: 'S',
+            icon: FaTshirt,
+        },
+        {
+            caption: 'M',
+            icon: GiTShirt,
+        },
+        {
+            caption: 'L',
+            icon: RiTShirt2Fill,
+        },
+        {
+            caption: 'XL',
+            icon: RiTShirt2Line,
+        },
+        {
+            caption: '?',
+            icon: RiTShirtLine,
         },
     ],
 }

@@ -1,11 +1,15 @@
 import { useConnection } from '../../context/connectionContext'
 import SprintCard from './sprintCard'
-import cards from '../cardSets/cards'
+import { getCardSet } from '../cardSets'
 
 export const CardSelection = () => {
     const { results } = useConnection()
 
+    if (!results) return <div></div>
+
     const users = Object.keys(results?.users || {})
+    
+    const cards = getCardSet(results.cardSet)
 
     return (
         <>
@@ -14,7 +18,7 @@ export const CardSelection = () => {
                     {users.map((e) => (
                         <li key={e}>
                             <SprintCard
-                                card={cards.find(c => c.caption === results.users[e].selection)}
+                                card={cards.set?.find(c => c.caption === results.users[e].selection)}
                                 hidden={!results.revealed && Boolean(results.users[e].selection !== "none")}
                             />
                             <p>{e}</p>

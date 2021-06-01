@@ -6,8 +6,6 @@ import SprintCardOptions from './sprintCardOptions'
 import { Header } from './header'
 
 export const App = () => {
-    const { isConnected } = useConnection()
-
     return (
         <>
             <article>
@@ -16,26 +14,27 @@ export const App = () => {
 
                     <SprintCardOptions />
 
-                    {isConnected ? <CardSelection /> : <div></div>}
+                    <CardSelection />
 
                     <CardsFooter />
                 </main>
             </article>
 
             <style jsx>{`
-                main {
-                    display: grid;
-                    grid-template-rows: 50px max-content 1fr 100px;
-                    height: 100vh;
-                    width: 100vw;
-                    
-                }
+                @media (min-width: 700px) {
+                    main {
+                        display: grid;
+                        grid-template-rows: 50px max-content 1fr 100px;
+                        height: 100vh;
+                        width: 100vw;
+                    }
 
-                article {
-                    white-space: nowrap;
-                    overflow: hidden;
-                    display: grid;
-                    grid-auto-flow: column;
+                    article {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        display: grid;
+                        grid-auto-flow: column;
+                    }
                 }
             `}</style>
         </>

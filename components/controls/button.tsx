@@ -21,6 +21,7 @@ export const Button: FC<ButtonHTMLAttributes<HTMLButtonElement>> = ({ children, 
 
                 button:hover {
                     background: var(--color-accent-color);
+                    cursor: pointer;
                 }
             `}</style>
         </>

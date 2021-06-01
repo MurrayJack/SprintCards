@@ -1,32 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { App } from '../../components/application/app'
 import { Layout } from '../../components/layouts/layout'
-import { Login } from '../../components/login'
+import { Login } from '../../components/login/login'
 import { ConnectionProvider, useConnection } from '../../context/connectionContext'
-import { ToastProvider } from 'react-toast-notifications'
 
-export default ({ room }) => {
+export default ({ roomName }) => {
+    const [userName, setUserName] = useState<string>()
+
     return (
-        <ToastProvider>
-            <ConnectionProvider room={room as string} roomFromUrl>
-                <Application />
-            </ConnectionProvider>
-        </ToastProvider>
+        <Layout>
+            {!userName && <Login roomName={roomName} onEnterRoom={setUserName} />}
+
+            {userName && <ConnectionProvider userName={userName} roomName={roomName as string}>
+                <App />
+            </ConnectionProvider>}
+        </Layout>
     )
 }
 
 export async function getServerSideProps({ query }) {
     return {
-        props: { room: query.room },
+        props: { roomName: query.room },
     }
-}
-
-const Application = () => {
-    const { isConnected } = useConnection()
-    return (
-        <Layout>
-            {!isConnected && <Login />}
-            {isConnected && <App />}
-        </Layout>
-    )
 }
