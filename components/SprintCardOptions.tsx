@@ -1,15 +1,15 @@
 import SprintCard from './SprintCard'
-import cards, { ICard } from './cards'
 import { useConnection } from '../context/ConnectionContext'
+import { getCard } from './CardSets'
 
 export default () => {
-    const { selection, select } = useConnection()
+    const { selection, select, results } = useConnection()
 
     return (
         <>
             <section>
                 <ul>
-                    {cards.map((e) => (
+                    {results && getCard(results?.cardSet).map((e) => (
                         <li key={e.caption}>
                             <SprintCard onClick={select} hoverable card={e} selected={selection === e.caption} />
                         </li>

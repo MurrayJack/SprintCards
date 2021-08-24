@@ -3,7 +3,9 @@ const server = require('http').Server(app)
 const io = require('socket.io')(server)
 const next = require('next')
 const dev = process.env.NODE_ENV !== 'production'
-const nextApp = next({ dev })
+const nextApp = next({
+    dev
+})
 const nextHandler = nextApp.getRequestHandler()
 const memoryStore = require('./store/memoryStore')
 
@@ -12,9 +14,15 @@ const menStore = new memoryStore()
 
 nextApp.prepare().then(async () => {
     io.sockets.on('connection', async (socket) => {
-        socket.on('create', async function ({ room, user }) {})
+        socket.on('create', async function ({
+            room,
+            user
+        }) {})
 
-        socket.on('room', async function ({ room = 'room', user }) {
+        socket.on('room', async function ({
+            room = 'room',
+            user
+        }) {
             socket.join(room)
 
             menStore
@@ -26,7 +34,11 @@ nextApp.prepare().then(async () => {
                 })
         })
 
-        socket.on('selection', async ({ room, user, selection }) => {
+        socket.on('selection', async ({
+            room,
+            user,
+            selection
+        }) => {
             socket.join(room)
 
             menStore
@@ -38,7 +50,10 @@ nextApp.prepare().then(async () => {
                 })
         })
 
-        socket.on('reveal', ({ room, user }) => {
+        socket.on('reveal', ({
+            room,
+            user
+        }) => {
             menStore
                 .ensureRoom(room)
                 .then((roomData) => roomData.reveal())
@@ -48,19 +63,28 @@ nextApp.prepare().then(async () => {
                 })
         })
 
-        socket.on('kick', async ({ room, name }) => {
+        socket.on('kick', async ({
+            room,
+            name
+        }) => {
             socket.join(room)
 
             menStore
                 .ensureRoom(room)
                 .then((roomData) => roomData.deleteUser(name))
                 .then((roomData) => {
-                    io.sockets.in(room).emit('kick', { name, room: roomData })
+                    io.sockets.in(room).emit('kick', {
+                        name,
+                        room: roomData
+                    })
                     io.sockets.in(room).emit('message', `User ${name} kicked`)
                 })
         })
 
-        socket.on('clear', async ({ room, user }) => {
+        socket.on('clear', async ({
+            room,
+            user
+        }) => {
             socket.join(room)
 
             menStore
@@ -71,6 +95,25 @@ nextApp.prepare().then(async () => {
                     io.sockets.in(room).emit('message', `User ${user} cleared ${room}`)
                 })
         })
+
+        socket.on('card-set', async ({
+            room,
+            cardSet
+        }) => {
+            socket.join(room)
+
+            menStore
+                .ensureRoom(room)
+                .then((roomData) => roomData.changeCardSet(cardSet))
+                .then((roomData) => {
+                    io.sockets.in(room).emit('update', roomData)
+                })
+                .catch((error) => {
+                    io.sockets.in(room).emit('error', error)
+                })
+        })
+
+
     })
 
     app.get('*', (req, res) => {

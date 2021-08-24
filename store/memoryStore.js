@@ -18,6 +18,7 @@ class Room {
     room = ''
     users = {}
     revealed = false
+    cardSet = "fibonacci"
 
     constructor(roomName) {
         this.room = roomName
@@ -42,6 +43,11 @@ class Room {
     async select(userName, selection) {
         this.users[userName] = { selection }
         return this
+    }
+
+    async changeCardSet(cardSet) {
+        this.cardSet = cardSet;
+        return this;
     }
 
     async reveal() {

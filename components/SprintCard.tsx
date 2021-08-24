@@ -1,5 +1,3 @@
-import cards, { ICard } from './cards'
-
 export interface ISprintCard {
     card?: ICard
     onClick?: (item: string) => void

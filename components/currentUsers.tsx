@@ -1,16 +1,17 @@
 import { useConnection } from '../context/ConnectionContext'
 import { MdDelete } from 'react-icons/md'
 
-export default () => {
+export const CurrentUsers = () => {
     const { results, kick, user } = useConnection()
 
     return (
         <>
-            <div>
+            <fieldset>
+                <legend>Current Users</legend>
                 <ul>
                     {results &&
                         Object.keys(results.users).map((e) => (
-                            <li key={e}>
+                            <li>
                                 <span>
                                     {e} {user === e ? ` (me)` : ''}
                                 </span>
@@ -20,8 +21,19 @@ export default () => {
                             </li>
                         ))}
                 </ul>
-            </div>
+            </fieldset>
+
             <style jsx>{`
+                fieldset {
+                    border: 1px solid var(--color-accent-color);
+                    padding: 16px;
+                    border-radius: 4px;
+                }
+
+                legend {
+                    padding: 0 8px;
+                }
+
                 ul {
                     list-style: none;
                     padding: 0;

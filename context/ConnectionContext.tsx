@@ -9,6 +9,7 @@ export interface IContext {
     clear?: () => void
     select?: (card: string) => void
     kick?: (name) => void
+    changeCardSet?: (set: CardSet) => void
     isConnected: boolean
     selection?: string
     user?: string
@@ -18,6 +19,7 @@ export interface IContext {
         revealed: boolean
         room: string
         users: { [key: string]: { selection: string } }
+        cardSet: CardSet
     }
 }
 
@@ -26,13 +28,18 @@ export const ConnectionContext = createContext<IContext>({
     isConnected: false,
 })
 
-export const ConnectionProvider: FC<{ room: string, roomFromUrl: boolean }> = ({ children, room: initialRoom, roomFromUrl }) => {
+export const ConnectionProvider: FC<{ room: string; roomFromUrl: boolean }> = ({
+    children,
+    room: initialRoom,
+    roomFromUrl,
+}) => {
     const [isConnected, setConnected] = useState(false)
     const [room, setRoom] = useState(initialRoom)
     const [user, setUser] = useState('')
     const [selection, setCurrentSelection] = useState<string>()
     const [results, setResults] = useState()
     const { addToast } = useToasts()
+    const [cardSet, setCardSet] = useState<CardSet>('fibonacci')
 
     const handleCreate = (room: string, user: string) => {
         socket.emit('create', { room, user })
@@ -61,6 +68,11 @@ export const ConnectionProvider: FC<{ room: string, roomFromUrl: boolean }> = ({
         socket.emit('kick', { room, name })
     }
 
+    const handleCardChange = (cardSet: CardSet) => {
+        socket.emit('card-set', { cardSet, room })
+        setCardSet(cardSet)
+    }
+
     let socket = io()
 
     useEffect(() => {
@@ -75,7 +87,6 @@ export const ConnectionProvider: FC<{ room: string, roomFromUrl: boolean }> = ({
         })
 
         socket.on('message', function (data) {
-            debugger
             addToast(data)
             console.log(data)
         })
@@ -93,7 +104,7 @@ export const ConnectionProvider: FC<{ room: string, roomFromUrl: boolean }> = ({
 
             socket.on('kick', function ({ name, room }) {
                 setResults(room)
-                if (name === user)  {
+                if (name === user) {
                     setConnected(false)
                 }
             })
@@ -116,11 +127,12 @@ export const ConnectionProvider: FC<{ room: string, roomFromUrl: boolean }> = ({
                 reveal: handleReveal,
                 clear: handleClear,
                 kick: handleKick,
+                changeCardSet: handleCardChange,
                 isConnected,
                 results,
                 user,
                 room,
-                roomFromUrl
+                roomFromUrl,
             }}
         >
             {children}
