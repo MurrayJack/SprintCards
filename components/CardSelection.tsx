@@ -25,22 +25,30 @@ export const CardSelection = () => {
             <style jsx>{`
                 section {
                     padding: var(--gaps-xlarge);
+                    height: 100%;
+                    box-sizing: border-box;
+                    overflow-x: auto;
+                    max-width: 100%;
+                    display: flex;
                 }
 
                 ul {
-                    display: grid;
+                    display: flex;
                     list-style: none;
                     padding: 0;
                     margin: 0;
                     grid-template-columns: repeat(7, 1fr);
                     grid-gap: 16px;
                     justify-content: center;
+                    height: 100%;
                 }
 
                 li {
                     display: grid;
                     align-items: center;
                     justify-items: center;
+                    height: 100%;
+                    grid-template-rows: 1fr auto;
                 }
 
                 p {
@@ -51,6 +59,8 @@ export const CardSelection = () => {
                     width: 170px;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    padding: 0;
+                    margin: 0;
                 }
             `}</style>
         </>

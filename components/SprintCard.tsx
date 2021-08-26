@@ -47,8 +47,9 @@ export default ({ card, selected, onClick, hoverable, hidden }: ISprintCard) => 
                 button {
                     border: 5px solid #487eb0;
                     border-radius: 5px;
-                    width: 170px;
-                    height: 260px;
+                    width: 90%;
+                    min-width: 150px;
+                    min-height: 90%;
                     background-color: var(--main-bg-color2);
                     font-size: 60px;
                     color: var(--main-color2);

@@ -19,10 +19,12 @@ export default () => {
             <style jsx>{`
                 section {
                     padding: var(--gaps-xlarge);
-                    display: grid;
-                    align-content: center;
                     height: 100%;
                     box-sizing: border-box;
+                    overflow-x: auto;
+                    max-width: 100%;
+                    display: flex;
+                    
                 }
 
                 ul {
@@ -30,17 +32,18 @@ export default () => {
                     list-style: none;
                     padding: 0;
                     margin: 0;
-                    grid-template-columns: repeat(7, 1fr);
+                    grid-auto-flow: column;
+                    grid-auto-columns: 1fr;
                     grid-gap: 16px;
                     justify-content: center;
+                    height: 100%;
                 }
 
                 li {
-                    display: grid;
-                    align-items: center;
-                    justify-items: center;
+                   
                     padding: 0;
                     margin: 0;
+                    height: 100%;
                 }
             `}</style>
         </>

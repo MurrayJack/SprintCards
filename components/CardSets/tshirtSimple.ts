@@ -1,19 +1,26 @@
 import { MdAccessibility } from 'react-icons/md'
-import { GiDutchBike, GiScooter } from 'react-icons/gi'
+import { GiDutchBike, GiFurShirt, GiTShirt, GiShirt } from 'react-icons/gi'
+import { RiTShirtLine, RiShirtFill } from 'react-icons/ri'
+import { IoMdShirt } from 'react-icons/io'
 
 const cards: ICard[] = [
     {
         caption: 'S',
-        icon: MdAccessibility,
+        icon: RiTShirtLine,
     },
     {
         caption: 'M',
-        icon: GiDutchBike,
+        icon: RiShirtFill,
     },
     {
         caption: 'L',
-        icon: GiScooter,
+        icon: GiTShirt,
+    },
+    {
+        caption: 'XL',
+        icon: GiShirt,
     },
 ]
 
 export default cards
+2

@@ -35,10 +35,20 @@ export const App = () => {
                 </aside>
             </article>
 
+            <style global jsx>{`
+                * {
+                    box-sizing: border-box;
+                }
+
+                body {
+                    overflow: none;
+                }
+            `}</style>
+
             <style jsx>{`
                 main {
                     display: grid;
-                    grid-template-rows: 50px max-content 1fr 100px;
+                    grid-template-rows: 50px 1fr 1fr 100px;
                     height: 100vh;
                     width: 100vw;
                     box-sizing: border-box;
