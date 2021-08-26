@@ -4,7 +4,7 @@ import { CardSelection } from './CardSelection'
 import { CardsFooter } from './CardsFooter'
 import SprintCardOptions from './SprintCardOptions'
 import { Header } from './header'
-import { CurrentUsers } from './CurrentUsers'
+import { CurrentUsers } from './AllUsers'
 import { RoomURL } from './RoomURL'
 import { AvailableCards } from './AvailableCards'
 
