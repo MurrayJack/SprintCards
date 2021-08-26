@@ -91,6 +91,7 @@ nextApp.prepare().then(async () => {
                 .ensureRoom(room)
                 .then((roomData) => roomData.clearAllSelections())
                 .then((roomData) => {
+                    io.sockets.in(room).emit('clear')
                     io.sockets.in(room).emit('update', roomData)
                     io.sockets.in(room).emit('message', `User ${user} cleared ${room}`)
                 })

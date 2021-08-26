@@ -98,6 +98,10 @@ export const ConnectionProvider: FC<{ room: string; roomFromUrl: boolean }> = ({
                 socket.emit('room', { room, user })
             })
 
+            socket.on('clear', function () {
+                setCurrentSelection(undefined)
+            })
+
             socket.on('update', function (room) {
                 setResults(room)
             })
