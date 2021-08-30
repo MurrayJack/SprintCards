@@ -1,11 +1,10 @@
 import { useConnection } from '../context/ConnectionContext'
 
-export const AvailableCards = ({ onChange }: { onChange: () => void }) => {
+export const AvailableCards = () => {
     const { results, changeCardSet } = useConnection()
 
     const handleOnChange = (set: CardSet) => {
         changeCardSet(set)
-        onChange()
     }
 
     return (

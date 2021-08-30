@@ -27,7 +27,7 @@ export const App = () => {
                 <aside>
                     <h2>Room: {room}</h2>
 
-                    <AvailableCards onChange={() => setVisible(false)} />
+                    <AvailableCards />
 
                     <CurrentUsers />
 
